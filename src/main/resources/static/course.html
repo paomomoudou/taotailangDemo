@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 热门课程整体布局 */
+        
+        .course {
+            width: 80%;
+            margin: 0 auto 40px auto;
+        }
+        
+        .course h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #333;
+        }
+        /* 两列网格布局 */
+        
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        /* 单个课程卡片 */
+        
+        .course-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #fdf0f4;
+            border-radius: 40px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+        }
+        /* 左侧图标 */
+        
+        .course-left {
+            flex-shrink: 0;
+        }
+        
+        .course-icon {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+        /* 中间文字区域 */
+        
+        .course-middle {
+            flex: 1;
+            cursor: pointer;
+            /* 鼠标悬浮变小手 */
+        }
+        
+        .course-middle h3 {
+            color: #EF89A0;
+            /* 粉色标题 */
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+        
+        .course-middle p {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.5;
+        }
+        /* 右侧立即预约按钮（桃子背景） */
+        
+        .course-right {
+            flex-shrink: 0;
+        }
+        
+        .book-btn {
+            width: 80px;
+        }
+        /* 手机端 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .banner-section {
+                flex-direction: column;
+            }
+            .banner,
+            .banner-contact {
+                width: 100%;
+            }
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+            .course-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var path = window.location.pathname;
+                var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名（如 about）
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+    <div class="content">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a><span>&gt;</span>
+            <span>课程中心</span><span>&gt;</span>
+            <span>日语课程</span>
+        </div>
+        <!-- 日语课程 -->
+        <section class="course">
+            <h2>日语课程</h2>
+            <div class="course-grid">
+                <!-- 课程1：高考日语 -->
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_1.png" alt="高考日语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(1)">
+                        <h3>高考日语</h3>
+                        <p>换道超车，冲刺高考高分</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <!-- 课程2：留学日语 -->
+                <div class="course-card">
+                    <div class="course-left">
+                        <!-- 可替换为你自己的图标 -->
+                        <img src="pic/hot_course_2.png" alt="留学日语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(2)">
+                        <h3>留学日语</h3>
+                        <p>直通日本院校，无缝衔接海外生活</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <!-- 课程3：考级日语 -->
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_3.png" alt="考级日语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(3)">
+                        <h3>考级日语</h3>
+                        <p>精准冲刺高分，高效通过JLPT</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <!-- 课程4：203日语考研 -->
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_4.png" alt="203日语考研" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(4)">
+                        <h3>203日语考研</h3>
+                        <p>定制备考方案，助力上岸</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_5.png" alt="商务日语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(5)">
+                        <h3>商务日语</h3>
+                        <p>职场进阶利器，解锁日企高薪机会</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_6.png" alt="兴趣日语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(6)">
+                        <h3>兴趣日语</h3>
+                        <p>走进日本文化，轻松解锁热爱与表达</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_7.png" alt="旅游日语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(7)">
+                        <h3>旅游日语</h3>
+                        <p>出行无忧，自由畅游日本全境</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_8.png" alt="外教口语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(8)">
+                        <h3>外教口语</h3>
+                        <p>纯母语环境，沉浸式练就地道日语</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_9.png" alt="少儿日语" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(9)">
+                        <h3>少儿日语</h3>
+                        <p>启蒙语言思维，快乐从小扎根</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+                <div class="course-card">
+                    <div class="course-left">
+                        <img src="pic/hot_course_10.png" alt="初中高级基础课" class="course-icon">
+                    </div>
+                    <div class="course-middle" onclick="goDetail(10)">
+                        <h3>初中高级基础课</h3>
+                        <p>系统夯实语言能力，阶梯式稳步进阶</p>
+                    </div>
+                    <img src="pic/momo.png" class="book-btn">
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+    <script>
+        // 跳转函数：拼接URL参数
+        function goDetail(id) {
+            // 跳转到 courseInfo.html，并携带 id 参数
+            location.href = `courseInfo.html?id=${id}`;
+        }
+    </script>
+</body>
+
+</html>

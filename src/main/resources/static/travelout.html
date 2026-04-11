@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 课程详情主体 */
+        
+        .studytour-detail {
+            width: 90%;
+            margin: 0 auto 40px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        /* 左侧课程图片 */
+        
+        .studytour-detail-img {
+            width: 45%;
+            flex-shrink: 0;
+        }
+        
+        .studytour-detail-img img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        p {
+            text-indent: 2em;
+        }
+        /* 右侧课程信息 */
+        
+        .studytour-detail-info {
+            flex: 1;
+        }
+        
+        .studytour-title {
+            display: flex;
+        }
+        
+        .studytour-detail-info h2 {
+            color: #EF89A0;
+            font-size: 28px;
+            margin-bottom: 5px;
+            margin-right: 10px;
+        }
+        
+        .studytour-title h3 {
+            margin-top: 5px;
+        }
+        
+        .studytour-desc {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        /* 右侧立即预约按钮（桃子背景） */
+        
+        .studytour-right {
+            flex-shrink: 0;
+            text-align: right;
+        }
+        
+        .book-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            color: #fff;
+            font-size: 20px;
+            background: url(pic/momo.png) no-repeat center;
+            background-size: contain;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        /* 手机端 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .banner-section {
+                flex-direction: column;
+            }
+            .banner,
+            .banner-contact {
+                width: 100%;
+            }
+            .studytour-detail {
+                flex-direction: column;
+            }
+            .studytour-detail-img {
+                width: 100%;
+            }
+            .studytour-detail-img img {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var path = window.location.pathname;
+                var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+    <div class="content">
+
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a><span>&gt;</span>
+            <span>赴日介绍</span><span>&gt;</span>
+            <span>旅行出游</span>
+        </div>
+        <!-- 旅行出游 -->
+        <section class="studytour-detail">
+            <!-- 左侧课程图片 -->
+            <div class="studytour-detail-img">
+                <img src="pic/course.jpg" alt="旅行出游">
+            </div>
+            <!-- 右侧课程信息 -->
+            <div class="studytour-detail-info">
+                <div class="studytour-title">
+                    <h2>日本旅游出行</h2>
+                    <h3>定制漫游，一站式赴日旅行服务</h3>
+                </div>
+
+                <div class="studytour-desc">
+                    <p>桃太郎日本语·赴日服务全链路</p>
+                    <p>从语言学习到海外深造，从旅行体验到职业发展，桃太郎日本语为你提供全链路、一站式赴日服务。多年深耕日本教育与职场市场，我们整合优质资源，为不同阶段、不同目标的学员提供量身定制的升学与出行方案，让每一步赴日之路，都更加稳妥、高效、有保障。</p>
+                    <p>为计划前往日本旅行、短期游学或休闲度假的人群，提供省心、合规、个性化的出行全流程服务。</p>
+                    <p>我们对接日本本地优质资源，涵盖签证办理、行程定制、交通住宿预订、在地陪同向导、特色文化体验等核心环节，可根据亲子家庭、蜜月度假、人文探索、商务考察等不同需求，量身打造专属出行方案，让你沉浸式感受日本风土人情，收获舒适、安心且难忘的旅行体验。</p>
+                    <p>从高中、大学、大学院升学，到游学交流、海外就业，我们以专业体系与全程资源，助你轻松走向日本，开启全新人生篇章。</p>
+                </div>
+                <div class="studytour-right">
+                    <a href="tel:15931212710" class="book-btn">立即预约</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+</body>
+
+</html>

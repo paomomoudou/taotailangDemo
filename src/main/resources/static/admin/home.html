@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+</head>
+<body>
+<!-- 右侧内容区域（局部加载页面） -->
+<div class="content">
+    <div class="card">
+        <h2>欢迎进入管理后台</h2>
+        <p style="margin-top:15px;color:#666;">当前时间：<span id="nowTime"></span></p>
+    </div>
+</div>
+<script>
+    // 修复：确保DOM加载完成后再执行脚本
+    $(function() {
+        // 定义时间更新函数
+        function setTime() {
+            // 容错处理：先判断元素是否存在
+            const nowTimeElem = document.getElementById("nowTime");
+            if (nowTimeElem) { // 元素存在才设置内容
+                nowTimeElem.innerText = new Date().toLocaleString();
+            }
+        }
+        // 初始执行+定时更新
+        setTime();
+        setInterval(setTime, 1000);
+    });
+</script>
+</body>
+</html>

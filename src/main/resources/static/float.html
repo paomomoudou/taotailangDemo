@@ -1,0 +1,114 @@
+<!-- 这是 float.html 文件 -->
+<div class="float-window">
+    <!-- 电话咨询 -->
+    <div class="float-item" onclick="window.location.href='tel:15931212710'">
+        <img src="pic/tel_2.png" alt="电话" class="float-icon">
+        <span class="float-text">电话咨询</span>
+    </div>
+    <!-- 小红书账号 -->
+    <div class="float-item xiaohongshu-item">
+        <img src="pic/momo_1.png" alt="小红书" class="float-icon">
+        <span class="float-text">小红书</span>
+        <div class="float-qrcode">
+            <img src="pic/redbook.jpg" alt="小红书二维码" class="xhs-img">
+            <p>扫码关注小红书</p>
+        </div>
+    </div>
+    <!-- 抖音账号 -->
+    <div class="float-item wechat-item">
+        <img src="pic/momo_3.png" alt="微信" class="float-icon">
+        <span class="float-text">抖音</span>
+        <div class="float-qrcode">
+            <img src="pic/douyin.jpg" alt="抖音二维码" class="xhs-img">
+            <p>扫码关注抖音</p>
+        </div>
+    </div>
+
+
+
+    <!-- 返回顶部 -->
+    <div class="float-item" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <img src="pic/momo_4.png" alt="返回顶部" class="float-icon">
+        <span class="float-text">返回顶部</span>
+    </div>
+</div>
+
+<style>
+    /* 这里写飘窗的所有样式 */
+    
+    .float-window {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 9999;
+    }
+    
+    .float-item {
+        position: relative;
+        /* 用于定位二维码 */
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        background: #fff;
+        border: 1px solid #EF89A0;
+        border-radius: 25px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .float-item:hover {
+        background: #EF89A0;
+        color: #fff;
+    }
+    
+    .float-icon {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+    }
+    
+    .float-text {
+        font-size: 14px;
+        font-family: "Microsoft YaHei", sans-serif;
+    }
+    
+    .float-qrcode {
+        position: absolute;
+        right: 80px;
+        bottom: 0;
+        padding: 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: none;
+        white-space: nowrap;
+        width: 180px;
+    }
+    
+    .wechat-item:hover .float-qrcode,
+    .xiaohongshu-item:hover .float-qrcode {
+        display: block;
+    }
+    
+    .float-qrcode img {
+        object-fit: contain;
+    }
+    
+    .float-qrcode p {
+        margin: 5px 0 0;
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .xhs-img {
+        width: 100%;
+        height: 180px ! important;
+    }
+</style>

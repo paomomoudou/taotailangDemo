@@ -1,0 +1,180 @@
+/* common.css 全部内容 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+body {
+    background-image: url("../pic/back.JPG") !important;
+    background-size: cover;
+    /* 铺满 */
+    background-position: center;
+    /* 居中 */
+    background-repeat: no-repeat;
+    /* 不重复 */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+/* 导航下拉小三角 */
+
+.nav-list>li.has-child::after {
+    content: '▼';
+    font-size: 10px;
+    color: #fff;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+
+/* 顶部 LOGO + 电话 + 二维码 */
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 5%;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #EF89A0;
+}
+
+.pic_1 {
+    height: 60px;
+}
+
+.top-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.tel {
+    font-size: 16px;
+    display: flex;
+}
+
+.tel img {
+    height: 50px;
+    margin-right: 20px;
+}
+
+.tel a {
+    color: #EF89A0;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.qrcode img {
+    width: 60px;
+    height: 60px;
+}
+
+
+/* 导航栏 */
+
+.nav-wrap {
+    background: #EF89A0;
+    position: relative;
+    z-index: 999;
+    padding: 12px 5%;
+}
+
+.nav-list {
+    display: flex;
+}
+
+.nav-list>li {
+    position: relative;
+    padding: 16px 22px;
+    color: #fff;
+    cursor: pointer;
+    background: #EF89A0;
+}
+
+.nav-list>li:hover {
+    background: #9BD3EC;
+}
+
+.active {
+    color: #000;
+}
+
+
+/* 下拉菜单 */
+
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 130px;
+    background: #EF89A0;
+    display: none;
+}
+
+.submenu li {
+    padding: 12px 15px;
+    color: #fff;
+}
+
+.submenu li:hover {
+    background: #9BD3EC;
+}
+
+.nav-list>li:hover .submenu {
+    display: block;
+}
+
+
+/* 手机汉堡菜单 */
+
+.hamburger {
+    display: none;
+    font-size: 24px;
+    color: #fff;
+    padding: 12px 5%;
+    cursor: pointer;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+.content {
+    flex: 1;
+}
+
+
+/* 底部 */
+
+footer {
+    background: #EF89A0;
+    color: #fff;
+    text-align: center;
+    padding: 25px 0;
+    margin-top: auto;
+}

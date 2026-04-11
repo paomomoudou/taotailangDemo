@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 课程特色主体 */
+        
+        .feature {
+            width: 90%;
+            margin: 0 auto 40px;
+        }
+        
+        .feature h2 {
+            text-align: center;
+            font-size: 26px;
+            margin-bottom: 40px;
+        }
+        /* 每行特色项 */
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        /* 左侧图片 */
+        
+        .feature-img {
+            width: 220px;
+            height: 160px;
+            flex-shrink: 0;
+        }
+        
+        .feature-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        /* 右侧文字区域 */
+        
+        .feature-content {
+            flex: 1;
+        }
+        /* 标题 + 两侧桃子图标 */
+        
+        .feature-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .peach-icon {
+            width: 25px;
+            height: 25px;
+            object-fit: contain;
+        }
+        
+        .feature-title h3 {
+            font-size: 26px;
+            font-weight: bold;
+        }
+        /* 介绍文字 */
+        
+        .feature-desc {
+            font-size: 20px;
+            line-height: 1.8;
+        }
+        /* 底部 */
+        
+        footer {
+            background: #EF89A0;
+            color: #fff;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: auto;
+        }
+        /* 手机端 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .feature-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            .feature-img {
+                width: 100%;
+                height: auto;
+            }
+            .feature-title {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var path = window.location.pathname;
+                var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名（如 about）
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <a href="index.html">首页</a><span>&gt;</span>
+        <span>课程中心</span><span>&gt;</span>
+        <span>教学特色</span>
+    </div>
+    <!-- 教学特色主体内容 -->
+    <div class="content">
+        <section class="feature">
+            <h2>教学特色</h2>
+
+            <!-- 第1行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/feature1.jpg" alt="趣味课堂">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>趣味课堂·拒绝哑巴日语</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        告别枯燥应试模式，聚焦日语表达训练，课堂高频互动沟通，老师全程带动氛围，让开口说日语成为常态～
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第2行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/feature2.jpg" alt="精品小班">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>精品小班·兼顾每一位学员</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        小班教学模式，课堂随时互动无压力，老师精准关注每位学生学习状态，即时答疑解惑，学习氛围拉满，进步更高效！
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第3行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/feature3.jpg" alt="多元班">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>多元班型·针对性高效提分</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        全覆盖定制化课程，开设高考日语、留学日语、商务日语、考级日语、203考研日语、兴趣日语、旅游日语、少儿日语、外教口语等，按需选择，效果更显著！
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第4行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/feature4.jpg" alt="课后督学">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>课后督学·全程跟进不掉队</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        授课老师+助教双师服务，课后实时答疑解惑，学习进度全程跟进监督，告别拖延，稳步提升！
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第5行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/feature5.jpg" alt="三心师资">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>三心师资·伴你稳步前行</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        教师团队兼具耐心、爱心与责任心，不仅深耕日语教学，更懂倾听学员需求、化解学习困惑，让每一位学习者在日语路上不彷徨、不孤单，稳步迈向目标～
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+    </div>
+
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+</body>
+
+</html>

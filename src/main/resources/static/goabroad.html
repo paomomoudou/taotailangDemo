@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 最新消息标题（带表情） */
+        
+        .abroad-title {
+            width: 90%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .abroad-title h2 {
+            font-size: 26px;
+            color: #EF89A0;
+        }
+        
+        .emoji-list {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .emoji {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        /* 消息列表 */
+        
+        .abroad-list {
+            width: 90%;
+            margin: 0 auto 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .abroad-item {
+            width: 100%;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #f0d8e0;
+            background-color: #fdf0f4;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .abroad-item:last-child {
+            border-bottom: none;
+        }
+        /* 左侧消息图片 */
+        
+        .abroad-img {
+            width: 100%;
+            height: 80%;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .abroad-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* 右侧消息内容 */
+        
+        .abroad-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            /* 鼠标悬浮变小手 */
+        }
+        
+        .abroad-content h3 {
+            font-size: 26px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .abroad-content h3 a:hover {
+            color: #EF89A0;
+        }
+        
+        .abroad-desc {
+            font-size: 20px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .abroad-desc a:hover {
+            color: #EF89A0;
+        }
+        
+        .abroad-date {
+            font-size: 13px;
+            color: #999;
+        }
+        /* 手机端 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .abroad-title {
+                flex-wrap: wrap;
+            }
+            .abroad-list,
+            .abroad-item {
+                flex-direction: column;
+            }
+            .abroad-img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var path = window.location.pathname;
+                var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名（如 about）
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+    <div class="content">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a><span>&gt;</span>
+            <span>赴日介绍</span><span>&gt;</span>
+            <span>出国留学</span>
+        </div>
+
+        <!-- 出国留学主体内容 -->
+
+        <!-- 标题 + 4个表情 -->
+        <div class="abroad-title">
+            <h2>出国留学</h2>
+            <div class="emoji-list">
+                <img src="pic/momo_1.png" alt="表情1" class="emoji">
+                <img src="pic/momo_2.png" alt="表情2" class="emoji">
+                <img src="pic/momo_3.png" alt="表情3" class="emoji">
+                <img src="pic/momo_4.png" alt="表情4" class="emoji">
+            </div>
+        </div>
+
+        <!-- 出国留学列表 -->
+        <div class="abroad-list">
+            <!-- 日本高中留学 -->
+            <div class="abroad-item">
+                <div class="abroad-img">
+                    <img src="pic/abroad1.jpg" alt="日本高中留学">
+                </div>
+                <div class="abroad-content" onclick="goDetail(1)">
+                    <h3>日本高中留学</h3>
+                    <p class="abroad-desc">早稻田从高中开始，奠定顶尖根基</p>
+                </div>
+            </div>
+
+            <!-- 消息2 -->
+            <div class="abroad-item">
+                <div class="abroad-img">
+                    <img src="pic/abroad2.jpg" alt="日本大学留学">
+                </div>
+                <div class="abroad-content" onclick="goDetail(2)">
+                    <h3>日本大学留学</h3>
+                    <p class="abroad-desc">直通名校，全方位升学规划</p>
+                </div>
+            </div>
+
+            <!-- 消息3 -->
+            <div class="abroad-item">
+                <div class="abroad-img">
+                    <img src="pic/abroad3.jpg" alt="日本大学院留学">
+                </div>
+                <div class="abroad-content" onclick="goDetail(3)">
+                    <h3>日本大学院留学</h3>
+                    <p class="abroad-desc">硕士、博士直通，专业进阶快车道</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+    <script>
+        // 跳转函数：拼接URL参数
+        function goDetail(id) {
+            // 跳转到 courseInfo.html，并携带 id 参数
+            location.href = `abroadDetail.html?id=${id}`;
+        }
+    </script>
+</body>
+
+</html>

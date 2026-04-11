@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 主容器 */
+        
+        .teacher-container {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            /* 手机端自动换行 */
+        }
+        /* 左侧照片 */
+        
+        .teacher-photo {
+            width: 40%;
+            min-width: 300px;
+            /* 最小宽度，防止太窄 */
+        }
+        
+        .teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        /* 右侧信息 */
+        
+        .teacher-info {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        /* 老师名字 */
+        
+        .teacher-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        /* 老师职称 */
+        
+        .teacher-title {
+            font-size: 18px;
+            color: #EF89A0;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        /* 老师简介 */
+        
+        .teacher-bio {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        /* 其他信息（可扩展） */
+        
+        .teacher-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .meta-item i {
+            color: #ff6b81;
+        }
+        /* 手机端适配 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .teacher-photo {
+                width: 100%;
+                min-width: auto;
+            }
+            .teacher-name {
+                font-size: 24px;
+            }
+            .teacher-info {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var page = "teacher";
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+    <div class="content">
+        <div class="detail" id="d1" style="display:none;">
+            <!-- 面包屑导航 -->
+            <div class="breadcrumb">
+                <a href="index.html">首页</a><span>&gt;</span>
+                <a href="teacher.html">师资力量</a><span>&gt;</span>
+                <span>李老师</span>
+            </div>
+            <div class="teacher-container">
+                <!-- 左侧：老师照片 -->
+                <div class="teacher-photo">
+                    <img src="pic/teacher1.jpg" alt="李老师照片">
+                </div>
+                <!-- 右侧：老师信息 -->
+                <div class="teacher-info">
+                    <div class="teacher-name">李老师</div>
+                    <div class="teacher-title">资深日语讲师 | 日语能力N1 | 12年教学经验</div>
+
+                    <div class="teacher-bio">
+                        桃太郎日语创始人，桃太郎日语全套课程体系研发者，教学功底扎实。<br> 坚持以学生目标为中心，量身规划学习路径，同时可为学生提供日本留学规划指导，帮助学员坚持学习、高效达成日语与留学目标。
+                    </div>
+                    <!-- 可扩展其他信息 -->
+                    <div class="teacher-meta">
+                        <div class="meta-item"><i>🎯</i> 擅长：JLPT-N1/N2、考研203、EJU、J-test等课程</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail" id="d2" style="display:none;">
+            <!-- 面包屑导航 -->
+            <div class="breadcrumb">
+                <a href="index.html">首页</a><span>&gt;</span>
+                <a href="teacher.html">师资力量</a><span>&gt;</span>
+                <span>王老师</span>
+            </div>
+            <div class="teacher-container">
+                <!-- 左侧：老师照片 -->
+                <div class="teacher-photo">
+                    <img src="pic/teacher2.jpg" alt="王老师照片">
+                </div>
+                <!-- 右侧：老师信息 -->
+                <div class="teacher-info">
+                    <div class="teacher-name">王老师</div>
+                    <div class="teacher-title">资深日语讲师 | 日语能力N1 | 10年教学经验</div>
+
+                    <div class="teacher-bio">
+                        石家庄学院校区校长，全能型教师，可胜任机构全部课程教学，口语地道纯正。<br> 性格温柔有趣、耐心负责，同时擅长日本留学规划与建议，让学员在轻松氛围中提升日语，顺利对接留学需求。
+                    </div>
+                    <!-- 可扩展其他信息 -->
+                    <div class="teacher-meta">
+                        <div class="meta-item"><i>🎯</i> 擅长：JLPT-N1/N2、考研203、EJU、J-test等课程</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail" id="d3" style="display:none;">
+            <!-- 面包屑导航 -->
+            <div class="breadcrumb">
+                <a href="index.html">首页</a><span>&gt;</span>
+                <a href="teacher.html">师资力量</a><span>&gt;</span>
+                <span>王老师</span>
+            </div>
+            <div class="teacher-container">
+                <!-- 左侧：老师照片 -->
+                <div class="teacher-photo">
+                    <img src="pic/teacher3.jpg" alt="王老师照片">
+                </div>
+                <!-- 右侧：老师信息 -->
+                <div class="teacher-info">
+                    <div class="teacher-name">王老师</div>
+                    <div class="teacher-title">资深日语讲师 | 日语能力N1 | 8年教学经验</div>
+
+                    <div class="teacher-bio">
+                        首席教师，课堂氛围轻松有趣、互动充足，对待学生耐心细致，擅长引导零基础学员稳步入门、长期坚持。<br> 主攻日语基础课程与JLPT考级专项训练，是众多学生日语学习路上的启蒙老师。
+                    </div>
+                    <!-- 可扩展其他信息 -->
+                    <div class="teacher-meta">
+                        <div class="meta-item"><i>🎯</i> 擅长：基础课-初/中/高、JLPT-N2、考研203等课程</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+    <script>
+        // 一、获取 url 里的 id 参数
+        function getId() {
+            let params = new URLSearchParams(location.search);
+            return params.get("id");
+        }
+
+        // 二、根据 id 显示对应盒子
+        window.onload = function() {
+            let id = getId(); // 拿到 1、2、3...
+
+            // 先全部隐藏
+            let all = document.querySelectorAll(".detail");
+            all.forEach(item => {
+                item.style.display = "none";
+            });
+
+            // 只显示对应盒子
+            let showBox = document.getElementById("d" + id);
+            if (showBox) {
+                showBox.style.display = "block";
+            }
+        }
+    </script>
+</body>
+
+</html>

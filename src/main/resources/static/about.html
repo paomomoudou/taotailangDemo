@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 校区：图片 + 文字 + 真实地图 */
+        
+        .campus {
+            width: 90%;
+            margin: 40px auto;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .campus h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+        
+        .campus-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .campus-img {
+            height: 260px;
+        }
+        
+        .campus-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .campus-info {
+            flex: 1;
+            line-height: 1.8;
+            font-size: 18px;
+            text-indent: 2em;
+            text-align: left;
+        }
+        
+        .map-img {
+            height: 260px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        /* 关于我们 内容样式 */
+        
+        .about {
+            width: 90%;
+            margin: 0 auto 40px auto;
+            line-height: 1.8;
+            font-size: 18px;
+        }
+        
+        .about h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 26px;
+        }
+        
+        .about-content {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .about-img {
+            width: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .about-text {
+            flex: 1;
+            text-align: justify;
+        }
+        
+        .about-text p {
+            margin-bottom: 16px;
+            text-indent: 2em;
+            text-align: left;
+        }
+        /* 底部 */
+        
+        footer {
+            background: #EF89A0;
+            color: #fff;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: auto;
+        }
+        /* 手机端 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .campus {
+                flex-direction: column;
+                text-align: center;
+            }
+            .campus-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-content {
+                flex-direction: column;
+            }
+            .about-img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var path = window.location.pathname;
+                var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名（如 about）
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+
+    <div class="content">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a><span>&gt;</span>
+            <span>关于我们</span>
+        </div>
+        <!-- 关于我们内容区 -->
+        <section class="about">
+            <h2>桃太郎日本语</h2>
+            <div class="about-content">
+                <div class="about-img">
+                    <img src="pic/about_1.jpg" alt="学校环境">
+                </div>
+                <div class="about-text">
+                    <p>日语，是通往世界的另一扇温柔而有力的门。无论是为高考提分、考研上岸，为赴日留学、海外升学，为JLPT/JLCT考级、职业进阶，还是出于兴趣、职场交流、文化热爱，日语都能为你打开更多人生选择。它门槛友好、实用性强、应用场景广泛，无论是学生、职场人、少儿还是爱好者，都能在学习中收获成长与底气。学好日语，不是多掌握一门语言，而是多拥有一种人生可能。</p>
+                    <p>桃太郎日本语2014年扎根石家庄，深耕日语教育十余载，累计服务近8000名学员，是本地口碑成熟、教学专业、体系完善的日语培训品牌。我们覆盖高考日语、留学日语、JLPT考级、203考研日语、商务日语、兴趣日语、外教口语、少儿日语全品类班型，一站式满足升学、考级、留学、就业、兴趣等多元学习需求。</p>
+                    <p>作为官方JLCT考试指定考点，我们实现培训—报名—考试一站式服务，学习更省心、出分更有保障。精品小班课堂、沉浸式语言环境、系统化课程体系，让每一位学员都能高效、无痛、开口即说，真正把日语学到能用、能考、能通关。</p>
+                    <p>在桃太郎，教学从不只是上课，而是全程陪伴式成长。我们坚持资深专业师资+精品小班授课+沉浸式互动课堂，搭配主讲老师+专属助教双师督学，从课前预习、课中精讲到课后巩固、阶段测评，全程盯学、全程陪伴。</p>
+                    <p>老师懂考试、懂教学、更懂学员，拒绝填鸭式教育，让日语学习轻松不费力。十余载沉淀，专业铸口碑，桃太郎日本语以实力与责任心，陪你稳稳学好日语，顺利抵达目标。</p>
+                </div>
+                <div class="about-img">
+                    <img src="pic/about_2.jpg" alt="学校环境">
+                    <br>
+                    <img src="pic/about_3.jpg" alt="学校环境">
+                </div>
+            </div>
+        </section>
+
+        <!-- 7 校区 + 直接显示地图（无404） -->
+        <section class="campus">
+            <h2>校区地址</h2>
+            <div class="campus-grid">
+                <div class="campus-img">
+                    <img src="pic/school.jpg" alt="校区环境">
+                </div>
+                <div class="campus-info">
+                    <p>地址：河北省石家庄市筑业高新国际A座12H</p>
+                    <p>电话： 15931212710 <span style="font-weight: bold;color: #000; margin: 0 5px;">|</span> 15032802517</p>
+                    <p>营业时间：8:00-21:00</p>
+                </div>
+                <img class="map-img" src="pic/address.jpg" alt="地图">
+            </div>
+        </section>
+    </div>
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+</body>
+
+</html>

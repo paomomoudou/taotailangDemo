@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>消息管理</title>
+  <style>
+    /* 全局样式与现有系统统一 */
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{font-family:"Microsoft Yahei",sans-serif;background:#f5f5f5;}
+    a{text-decoration:none;color:inherit;}
+    input,button,select{outline:none;border:1px solid #ddd;border-radius:4px;padding:0 10px;}
+    input:focus,select:focus{border-color:#EB7E98;box-shadow:0 0 0 2px rgba(235,126,152,.2);}
+    button{cursor:pointer;border-radius:4px;}
+    /* 页面主容器 */
+    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 10px;}
+    .mt-4{margin-top:16px;}
+    .mb-3{margin-bottom:12px;}
+    .search-bar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+    .search-bar select,.search-bar button{height:36px;line-height:36px;}
+    .search-bar select{width:180px;}
+    .search-bar button{padding:0 16px;background:#EB7E98;color:#fff;border:none;}
+    .search-bar button:hover{background:#e86588;}
+    /* 标题 & 按钮通用样式 */
+    h3{font-size:18px;color:#333;margin-bottom:16px;padding-top:16px;}
+    .btn{padding:8px 16px;font-size:14px;}
+    .btn-primary{background:#EB7E98;color:#fff;}
+    .btn-primary:hover{background:#e86588;}
+    .btn-success{background:#52c41a;color:#fff;}
+    .btn-success:hover{background:#47a814;}
+    .btn-secondary{background:#eee;color:#666;}
+    .btn-secondary:hover{background:#e5e5e5;}
+    .btn-danger{background:#ff4d4f;color:#fff;}
+    .btn-danger:hover{background:#ff7875;}
+    .btn-sm{padding:4px 8px;font-size:12px;}
+    /* 表格列表样式 */
+    .message-table{width:100%;background:#fff;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-collapse:collapse;overflow:hidden;}
+    .message-table thead{background:#f8f8f8;}
+    .message-table th,.message-table td{padding:12px 8px;text-align:center;border-bottom:1px solid #eee;}
+    .message-table th{font-size:14px;color:#666;font-weight:normal;}
+    .message-table td{font-size:14px;color:#333;vertical-align:middle;}
+    .message-table tr:last-child td{border-bottom:0;}
+    /* 图片预览样式 */
+    .msg-img{width:60px;height:40px;object-fit:cover;border-radius:4px;}
+    /* 分页样式 */
+    .pagination{display:flex;justify-content:center;list-style:none;margin-top:20px;gap:4px;padding-bottom:20px;}
+    .page-item{height:32px;line-height:32px;}
+    .page-link{display:inline-block;padding:0 12px;height:100%;border-radius:4px;background:#fff;border:1px solid #eee;color:#666;font-size:14px;}
+    .page-item.active .page-link{background:#EB7E98;color:#fff;border-color:#EB7E98;}
+    .page-link:hover{background:#f5f5f5;}
+    /* 弹窗样式（与现有系统统一） */
+    .mask{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:99999;cursor:pointer;}
+    .modal{width:90%;max-width:700px;background:#fff;padding:30px;border-radius:12px;cursor:default;box-shadow:0 4px 20px rgba(0,0,0,.15);position:relative;}
+    .modal-header{margin-bottom:25px;padding-bottom:0;border-bottom:none;}
+    .modal-header h5{font-size:24px;color:#333;margin:0;font-weight:600;}
+    .modal-body{margin-bottom:30px;text-align:left;}
+    .form-item{margin-bottom:20px;display:flex;flex-direction:column;gap:8px;}
+    .form-item label{font-size:16px;color:#333;font-weight:500;}
+    .form-item input,.form-item select,.form-item textarea{height:44px;line-height:44px;padding:0 15px;font-size:14px;}
+    .form-item textarea{height:120px;resize:none;line-height:1.6;padding:10px;}
+    .form-item .img-preview{width:100%;max-height:200px;object-fit:contain;margin-top:10px;display:none;}
+
+    .modal-footer{margin-top: 20px;}
+    .modal-footer button{
+      padding: 8px 16px;
+      margin-left: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    /* 空数据提示 */
+    .empty-tip{width:100%;background:#fff;text-align:center;padding:80px 0;color:#999;font-size:14px;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:20px;}
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .message-table th,.message-table td{padding:8px 4px;}
+      .msg-img{width:40px;height:30px;}
+      .btn-sm{padding:2px 6px;font-size:12px;}
+      .search-bar{flex-direction:column;align-items:stretch;}
+      .search-bar select{width:100%;}
+      .modal{padding:20px;}
+      .modal-header h5{font-size:20px;}
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <h2>消息管理</h2>
+  <!-- 检索栏+新增按钮 -->
+  <div class="search-bar">
+    <select id="searchType">
+      <option value="-1">全部消息类型</option>
+      <option value="0">最新消息</option>
+      <option value="1">考试资讯</option>
+    </select>
+    <button class="btn-primary" onclick="searchMessage()">检索</button>
+    <button class="btn-success" onclick="openAddModal()">新增消息</button>
+  </div>
+  <!-- 消息列表 -->
+  <div id="messageList">
+    <!-- 动态渲染列表 -->
+  </div>
+  <!-- 分页 -->
+  <nav>
+    <ul class="pagination" id="messagePagination">
+      <!-- 动态渲染分页 -->
+    </ul>
+  </nav>
+</div>
+
+<!-- 新增/编辑消息弹窗 -->
+<div class="mask" id="msgModal" onclick="closeMsgModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h5 id="modalTitle">新增消息</h5>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="msgId"> <!-- 编辑时存储消息ID -->
+      <div class="form-item">
+        <label>消息标题</label>
+        <input type="text" id="msgTitle" placeholder="请输入消息标题">
+      </div>
+      <div class="form-item">
+        <label>标语</label>
+        <input type="text" id="msgSlogan" placeholder="请输入消息标语（简短描述）">
+      </div>
+      <div class="form-item">
+        <label>消息内容</label>
+        <textarea id="msgContent" placeholder="请输入消息详细内容"></textarea>
+      </div>
+      <div class="form-item">
+        <label>消息图片</label>
+        <input type="file" id="msgImage" accept="image/*">
+        <img id="msgImgPreview" class="img-preview">
+      </div>
+      <div class="form-item">
+        <label>消息类型</label>
+        <select id="msgType">
+          <option value="0">最新消息</option>
+          <option value="1">考试资讯</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:15px;">
+      <button class="btn-secondary" onclick="closeMsgModal()">取消</button>
+      <button class="btn-primary" onclick="saveMessage()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 删除确认弹窗 -->
+<div class="mask" id="delModal" onclick="closeDelModal()">
+  <div class="modal modal-sm" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h5>确认删除</h5>
+    </div>
+    <div class="modal-body">
+      确定要删除该消息吗？<br>删除后将无法恢复！
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeDelModal()">取消</button>
+      <button class="btn-danger" onclick="confirmDelMessage()">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- 依赖主页面的jQuery，无需重复引入 -->
+<script>
+  // 复用主页面全局变量，仅赋值不声明
+  messageCurrentPage = 1;
+  messagePageSize = 10;
+  currentMsgId = null; // 当前操作的消息ID
+  imgUrl = ""; // 存储图片地址（新增/编辑用）
+
+  // 时间格式化工具函数（与轮播图页面统一）
+  function formatDate(dateStr) {
+    if (!dateStr) return '无记录';
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}年${month}月${day}日`;
+  }
+
+  // 加载消息列表（支持按类型检索）
+  function loadMessageList() {
+    $("#messageList").html(`<div class="empty-tip">数据加载中...</div>`);
+    const type = $("#searchType").val(); // 获取检索类型
+    // 调用后端接口：传入分页、类型参数
+    $.get(`/api/message/list?page=${messageCurrentPage}&size=${messagePageSize}&type=${type}`, res => {
+      let list = res.data?.records || [];
+      let html = "";
+      if (list.length === 0) {
+        html = `<div class="empty-tip">暂无消息数据</div>`;
+      } else {
+        html = `
+<table class="message-table">
+  <thead>
+    <tr>
+      <th>消息编号</th>
+      <th>消息标题</th>
+      <th>消息类型</th>
+      <th>发布时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+`;
+        // 消息编号从1开始连续排序（按分页计算起始编号）
+        const startNum = (messageCurrentPage - 1) * messagePageSize + 1;
+        list.forEach((item, index) => {
+          const serialNum = startNum + index;
+          const typeText = item.type === 0 ? '最新消息' : '考试资讯';
+          html += `
+    <tr>
+      <td>${serialNum}</td>
+      <td>${item.title || '-'}</td>
+      <td>${typeText}</td>
+      <td>${formatDate(item.publishTime)}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="openEditModal(${item.id})">编辑</button>
+        <button class="btn btn-sm btn-danger" style="margin-left:6px;" onclick="showDelModal(${item.id})">删除</button>
+      </td>
+    </tr>
+`;
+        });
+        html += `
+  </tbody>
+</table>
+`;
+      }
+      $("#messageList").html(html);
+      // 渲染分页
+      let pages = res.data?.pages || 1;
+      let pageHtml = "";
+      for (let i = 1; i <= pages; i++) {
+        pageHtml += `<li class="page-item ${i==messageCurrentPage?'active':''}">
+                      <a class="page-link" href="javascript:goMessagePage(${i})">${i}</a>
+                    </li>`;
+      }
+      $("#messagePagination").html(pageHtml);
+    }).fail(() => {
+      $("#messageList").html(`<div class="empty-tip" style="color:#f5222d;">数据加载失败</div>`);
+    });
+  }
+
+  // 切换消息分页
+  function goMessagePage(p) {
+    if (p === messageCurrentPage) return;
+    messageCurrentPage = p;
+    loadMessageList();
+  }
+
+  // 检索消息
+  function searchMessage() {
+    messageCurrentPage = 1; // 检索时重置为第一页
+    loadMessageList();
+  }
+
+  // 打开新增弹窗
+  function openAddModal() {
+    $("#modalTitle").text("新增消息");
+    $("#msgId").val(""); // 清空ID
+    $("#msgTitle").val("");
+    $("#msgSlogan").val("");
+    $("#msgContent").val("");
+    $("#msgImage").val("");
+    $("#msgImgPreview").hide().removeAttr("src");
+    $("#msgType").val("0");
+    imgUrl = "";
+    document.getElementById("msgModal").style.display = "flex";
+  }
+
+  // 打开编辑弹窗
+  function openEditModal(id) {
+    currentMsgId = id;
+    // 调用后端详情接口
+    $.get(`/api/message/detail/${id}`, res => {
+      if (res.code === 200) {
+        let d = res.data;
+        $("#modalTitle").text("编辑消息");
+        $("#msgId").val(d.id);
+        $("#msgTitle").val(d.title || "");
+        $("#msgSlogan").val(d.slogan || "");
+        $("#msgContent").val(d.content || "");
+        $("#msgType").val(d.type || "0");
+        // 图片预览
+        if (d.imgUrl) {
+          imgUrl = d.imgUrl;
+          $("#msgImgPreview").attr("src", d.imgUrl).show();
+        } else {
+          $("#msgImgPreview").hide().removeAttr("src");
+        }
+        document.getElementById("msgModal").style.display = "flex";
+      } else {
+        alert("加载消息详情失败：" + (res.msg || "未知错误"));
+      }
+    }).fail(() => {
+      alert("网络错误，加载详情失败");
+    });
+  }
+
+  // 关闭消息弹窗
+  function closeMsgModal() {
+    document.getElementById("msgModal").style.display = "none";
+    currentMsgId = null;
+  }
+
+  // 图片上传预览
+  $("#msgImage").change(function () {
+    let file = this.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("请选择有效的图片文件（jpg/png/jpeg/webp等）");
+      this.value = "";
+      return;
+    }
+    // 预览图片
+    let url = URL.createObjectURL(file);
+    $("#msgImgPreview").attr("src", url).show();
+    // 上传图片到后端（复用轮播图上传接口或单独接口）
+    let formData = new FormData();
+    formData.append("file", file);
+    $.ajax({
+      url: "/api/message/upload", // 后端图片上传接口
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: res => {
+        if (res.code === 200) {
+          imgUrl = res.data; // 保存图片地址
+        } else {
+          alert("图片上传失败：" + (res.msg || "上传失败"));
+          this.value = "";
+          $("#msgImgPreview").hide();
+        }
+      },
+      error: () => {
+        alert("网络错误，图片上传失败");
+        this.value = "";
+        $("#msgImgPreview").hide();
+      }
+    });
+  });
+
+  // 保存消息（新增/编辑通用）
+  function saveMessage() {
+    const id = $("#msgId").val();
+    const title = $("#msgTitle").val().trim();
+    const slogan = $("#msgSlogan").val().trim();
+    const content = $("#msgContent").val().trim();
+    const type = $("#msgType").val();
+
+    // 表单校验
+    if (!title) { alert("请输入消息标题"); $("#msgTitle").focus(); return; }
+    if (!content) { alert("请输入消息内容"); $("#msgContent").focus(); return; }
+
+    // 构造请求参数
+    const params = {
+      title,
+      slogan,
+      content,
+      type: Number(type),
+      imgUrl: imgUrl,
+      publishTime: new Date().toISOString() // 发布时间默认当前时间
+    };
+    if (id) params.id = id; // 编辑时传入ID
+
+    // 调用后端保存接口（核心修改：指定JSON格式）
+    const url = id ? "/api/message/update" : "/api/message/add";
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: JSON.stringify(params), // 转为JSON字符串
+      contentType: "application/json", // 关键：指定请求格式为JSON
+      success: res => {
+        if (res.code === 200) {
+          alert(id ? "编辑成功！" : "新增成功！");
+          closeMsgModal();
+          loadMessageList(); // 重新加载列表
+        } else {
+          alert("操作失败：" + (res.msg || "未知错误"));
+        }
+      },
+      error: () => {
+        alert("网络错误，操作失败");
+      }
+    });
+  }
+
+  // 显示删除确认弹窗
+  function showDelModal(id) {
+    currentMsgId = id;
+    document.getElementById("delModal").style.display = "flex";
+  }
+
+  // 关闭删除弹窗
+  function closeDelModal() {
+    document.getElementById("delModal").style.display = "none";
+    currentMsgId = null;
+  }
+
+  // 确认删除消息
+  function confirmDelMessage() {
+    if (!currentMsgId) return;
+    $.post("/api/message/delete", { id: currentMsgId }, res => {
+      if (res.code === 200) {
+        alert("删除成功！");
+        closeDelModal();
+        loadMessageList(); // 重新加载列表
+      } else {
+        alert("删除失败：" + (res.msg || "未知错误"));
+      }
+    }).fail(() => {
+      alert("网络错误，删除失败");
+      closeDelModal();
+    });
+  }
+
+  // 暴露全局函数，供主页面调用（解决二次切换不显示问题）
+  window.loadMessageList = loadMessageList;
+
+  // 页面初始化加载
+  $(function () {
+    loadMessageList();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播图管理</title>
+  <style>
+    /* 全局样式重置 & 通用样式（和主页面保持一致） */
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{font-family:"Microsoft Yahei",sans-serif;background:#f5f5f5;}
+    a{text-decoration:none;color:inherit;}
+    input,button{outline:none;border:none;}
+    button{cursor:pointer;border-radius:4px;}
+    input{border:1px solid #ddd;border-radius:4px;padding:0 10px;}
+    input:focus{border-color:#EB7E98;box-shadow:0 0 0 2px rgba(235,126,152,.2);}
+    /* 页面主容器 */
+    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 10px;}
+    .mt-4{margin-top:16px;}
+    .mb-3{margin-bottom:12px;}
+    .mb-2{margin-bottom:8px;}
+    /* 搜索栏 */
+    .search-box{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+    .search-box select,.search-box button{height:36px;line-height:36px;}
+    .search-box select{width:180px;}
+    .search-box button{padding:0 16px;background:#EB7E98;color:#fff;border:none;}
+    .search-box button:hover{background:#e86588;}
+    /* 标题 & 按钮通用样式 */
+    h3{font-size:18px;color:#333;margin-bottom:16px;padding-top:16px;}
+    .btn{padding:8px 16px;font-size:14px;}
+    .btn-primary{background:#EB7E98;color:#fff;}
+    .btn-primary:hover{background:#e86588;}
+    .btn-success{background:#52c41a;color:#fff;}
+    .btn-success:hover{background:#47a814;}
+    .btn-secondary{background:#eee;color:#666;}
+    .btn-secondary:hover{background:#e5e5e5;}
+    .btn-danger{background:#ff4d4f;color:#fff;}
+    .btn-danger:hover{background:#ff7875;}
+    .btn-sm{padding:4px 8px;font-size:12px;}
+    /* 表格列表样式（核心改造） */
+    .banner-table{width:100%;background:#fff;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-collapse:collapse;overflow:hidden;}
+    .banner-table thead{background:#f8f8f8;}
+    .banner-table th,
+    .banner-table td{padding:12px 8px;text-align:center;border-bottom:1px solid #eee;}
+    .banner-table th{font-size:14px;color:#666;font-weight:normal;}
+    .banner-table td{font-size:14px;color:#333;vertical-align:middle;}
+    .banner-table tr:last-child td{border-bottom:0;}
+    /* 轮播图缩略图 */
+    .banner-img{width:80px;height:45px;object-fit:cover;border-radius:4px;}
+    /* 分页样式 */
+    .pagination{display:flex;justify-content:center;list-style:none;margin-top:20px;gap:4px;padding-bottom:20px;}
+    .page-item{height:32px;line-height:32px;}
+    .page-link{display:inline-block;padding:0 12px;height:100%;border-radius:4px;background:#fff;border:1px solid #eee;color:#666;font-size:14px;}
+    .page-item.active .page-link{background:#EB7E98;color:#fff;border-color:#EB7E98;}
+    .page-link:hover{background:#f5f5f5;}
+    .page-item.active .page-link:hover{background:#e86588;}
+    /* 自定义弹窗遮罩（和主页面弹窗样式统一） */
+    .mask{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:99999;cursor:pointer;}
+    /* 弹窗主体 */
+    .modal{width:500px;background:#fff;padding:24px;border-radius:8px;cursor:default;box-shadow:0 4px 20px rgba(0,0,0,.2);position:relative;}
+    .modal-sm{width:380px;}
+    .modal-header{margin-bottom:16px;border-bottom:1px solid #f5f5f5;padding-bottom:8px;}
+    .modal-header h5{font-size:18px;color:#333;margin:0;}
+    .modal-body{margin-bottom:16px;text-align:left;font-size:16px;}
+    .modal-footer{text-align:right;}
+    .modal-footer .btn{margin-left:8px;}
+    /* 文件上传 & 图片预览 */
+    input[type="file"]{padding:6px;cursor:pointer;}
+    #preview{width:100%;border-radius:4px;margin-top:8px;}
+    /* 空数据提示 */
+    .empty-tip{width:100%;background:#fff;text-align:center;padding:80px 0;color:#999;font-size:14px;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:20px;}
+    /* 滑动开关样式（适配主题色） */
+    .switch{position:relative;display:inline-block;width:48px;height:24px;}
+    .switch input{opacity:0;width:0;height:0;}
+    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#eee;transition:.4s;border-radius:24px;}
+    .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:white;transition:.4s;border-radius:50%;}
+    input:checked + .slider{background-color:#EB7E98;}
+    input:checked + .slider:before{transform:translateX(24px);}
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .banner-table th, .banner-table td{padding:8px 4px;}
+      .banner-img{width:60px;height:35px;}
+      .btn-sm{padding:2px 6px;font-size:12px;}
+      .search-box{flex-direction:column;align-items:stretch;}
+      .search-box select{width:100%;}
+      .switch{width:40px;height:20px;}
+      .slider:before{height:14px;width:14px;}
+      input:checked + .slider:before{transform:translateX(20px);}
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <h2>轮播图管理</h2>
+  <div class="search-box">
+    状态：
+    <select id="statusSearch">
+      <option value="">全部</option>
+      <option value="1">启用</option>
+      <option value="0">禁用</option>
+    </select>
+    <button onclick="loadBannerList()">搜索</button>
+    <button class="btn btn-primary" onclick="openAddModal()">新增轮播图</button>
+  </div>
+
+  <!-- 核心改造：表格列表替换原网格布局 -->
+  <div id="bannerList">
+    <!-- 表格动态渲染 -->
+  </div>
+  <nav>
+    <ul class="pagination" id="pagination">
+      <!-- 分页动态渲染 -->
+    </ul>
+  </nav>
+</div>
+
+<!-- 新增轮播图弹窗（原） -->
+<div class="mask" id="addModal" onclick="closeAddModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h5>新增轮播图</h5>
+    </div>
+    <div class="modal-body">
+      <label>排序值</label>
+      <input type="number" id="sort" class="form-control mb-2" placeholder="请输入排序值" value="0" min="0" style="height:36px;line-height:36px;width:100%;">
+      <label>请选择轮播图</label>
+      <input type="file" id="imageFile" class="form-control mb-2" accept="image/*" style="width:100%;">
+      <img id="preview" style="width:100%;display:none;">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeAddModal()">取消</button>
+      <button class="btn btn-success" onclick="saveBanner()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 轮播图详情弹窗（原） -->
+<div class="mask" id="detailModal" onclick="closeDetailModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h5>轮播图详情</h5>
+    </div>
+    <div class="modal-body" id="detailBody">
+      <!-- 详情动态渲染 -->
+    </div>
+  </div>
+</div>
+
+<!-- 状态切换确认弹窗 -->
+<div class="mask" id="statusModal" onclick="closeStatusModal()">
+  <div class="modal modal-sm" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h5>确认修改状态</h5>
+    </div>
+    <div class="modal-body" id="statusModalText">
+      确定要禁用该轮播图吗？
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeStatusModal()">取消</button>
+      <button class="btn btn-primary" onclick="confirmChangeStatus()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 删除确认弹窗 -->
+<div class="mask" id="delModal" onclick="closeDelModal()">
+  <div class="modal modal-sm" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h5>确认删除</h5>
+    </div>
+    <div class="modal-body">
+      确定要删除该轮播图吗？<br>删除后将无法恢复！
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeDelModal()">取消</button>
+      <button class="btn btn-danger" onclick="confirmDelBanner()">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 关键修改1：复用主页面全局变量，仅赋值不重复声明（避免冲突）
+  currentPage = 1; // 主页面已用let声明，此处直接赋值（可修改，支持分页切换）
+  pageSize = 10; // 常量仅当前页面使用，
+  currentOperId = null;
+  targetStatus = null;
+
+  // 核心改造：加载表格列表（图片编号从1开始连续排序）
+  function loadList() {
+    // 关键2：加载前显示加载提示（优化体验）
+    $("#bannerList").html(`<div class="empty-tip">数据加载中...</div>`);
+    const status = $("#statusSearch").val();
+    $.get("/api/banner/list",{
+      current: currentPage,
+      size: pageSize,
+      status: status || null
+    },function(res) {
+      if(res.code !== 200) return;
+      let list = res.data?.records || [];
+      let html = "";
+      if (list.length === 0) {
+        // 空数据提示
+        html = `<div class="empty-tip">暂无轮播图数据</div>`;
+      } else {
+        // 表格布局：表头+数据行
+        html = `
+<table class="banner-table">
+  <thead>
+    <tr>
+      <th>图片编号</th>
+      <th>轮播图</th>
+      <th>顺序</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+`;
+        // 计算起始编号：(当前页-1)*每页条数 + 1 （如第1页从1开始，第2页从11开始）
+        const startNum = (currentPage - 1) * pageSize + 1;
+        // 渲染数据行
+        list.forEach((item, index) => {
+          const serialNum = startNum + index; // 连续图片编号
+          html += `
+    <tr>
+      <td>${serialNum}</td>
+      <td><img src="${item.imgUrl}" class="banner-img" alt="轮播图"></td>
+      <td>${item.sort || 0}</td>
+      <td>
+        <label class="switch">
+          <input type="checkbox" ${item.status==1?'checked':''} onchange="showStatusModal(${item.id},${item.status==1?0:1})">
+          <span class="slider"></span>
+        </label>
+        <span style="margin-left:6px;">${item.status==1?'启用':'禁用'}</span>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="showDetail(${item.id})">详情</button>
+        <button class="btn btn-sm btn-danger ml-2" style="margin-left:6px;" onclick="showDelModal(${item.id})">删除</button>
+      </td>
+    </tr>
+`;
+        });
+        html += `
+  </tbody>
+</table>
+`;
+      }
+      $("#bannerList").html(html);
+      // 渲染分页
+      let pages = res.data?.pages || 1;
+      let pageHtml = "";
+      for (let i = 1; i <= pages; i++) {
+        pageHtml += `<li class="page-item ${i==currentPage?'active':''}">
+                      <a class="page-link" href="javascript:goPage(${i})">${i}</a>
+                    </li>`;
+      }
+      $("#pagination").html(pageHtml);
+  }).fail(() => {
+      $("#bannerList").html(`<div class="empty-tip" style="color:#f5222d;">数据加载失败</div>`);
+    });
+  }
+
+  // 切换分页
+  function goPage(p) {
+    if (p === currentPage) return;
+    currentPage = p;
+    loadList();
+  }
+
+  // 显示状态切换确认弹窗
+  function showStatusModal(id, status) {
+    currentOperId = id;
+    targetStatus = status;
+    const text = status === 0 ? "确定要禁用该轮播图吗？" : "确定要启用该轮播图吗？";
+    $("#statusModalText").html(text);
+    document.getElementById("statusModal").style.display = "flex";
+  }
+
+  // 关闭状态切换弹窗
+  function closeStatusModal() {
+    document.getElementById("statusModal").style.display = "none";
+    // 重置开关状态
+    const checkbox = document.querySelector(`input[onchange*="${currentOperId}"]`);
+    if (checkbox) checkbox.checked = targetStatus === 0;
+    currentOperId = null;
+    targetStatus = null;
+  }
+
+  // 确认修改状态
+  function confirmChangeStatus() {
+    if (!currentOperId && targetStatus === null) return;
+    $.post("/api/banner/changeStatus", { id: currentOperId, status: targetStatus }, res => {
+      if (res.code === 200) {
+        loadList();
+        closeStatusModal();
+      } else {
+        alert("状态修改失败：" + (res.msg || "未知错误"));
+      }
+    }).fail(() => {
+      alert("网络错误，状态修改失败");
+      closeStatusModal();
+    });
+  }
+
+  // 显示删除确认弹窗
+  function showDelModal(id) {
+    currentOperId = id;
+    document.getElementById("delModal").style.display = "flex";
+  }
+
+  // 关闭删除弹窗
+  function closeDelModal() {
+    document.getElementById("delModal").style.display = "none";
+    currentOperId = null;
+  }
+
+  // 确认删除轮播图
+  function confirmDelBanner() {
+    if (!currentOperId) return;
+    $.post("/api/banner/delete", { id: currentOperId }, res => {
+      if (res.code === 200) {
+        closeDelModal();
+        loadList(); // 重新加载列表
+        alert("删除成功！");
+      } else {
+        alert("删除失败：" + (res.msg || "未知错误"));
+      }
+    }).fail(() => {
+      alert("网络错误，删除失败");
+      closeDelModal();
+    });
+  }
+
+  // 打开新增弹窗
+  function openAddModal() {
+    document.getElementById("addModal").style.display = "flex";
+    // 重置表单
+    $("#sort").val(0);
+    $("#imageFile").val("");
+    $("#preview").hide().removeAttr("src");
+  }
+
+  // 关闭新增弹窗
+  function closeAddModal() {
+    document.getElementById("addModal").style.display = "none";
+  }
+
+  // 打开详情弹窗
+  function showDetail(id) {
+    $.get("/api/banner/detail/" + id, res => {
+      if (res.code === 200) {
+        let d = res.data;
+        $("#detailBody").html(`
+<img src="${d.imgUrl}" width="100%" style="border-radius:4px;margin-bottom:16px;">
+<p class="mb-2"><strong>图片ID：</strong>${d.id || '-'}</p>
+<p class="mb-2"><strong>排序：</strong>${d.sort || 0}</p>
+<p class="mb-2"><strong>状态：</strong>${d.status==1?'启用':'禁用'}</p>
+<p class="mb-2"><strong>创建时间：</strong>${d.createTime || '无记录'}</p>
+<p class="mb-0"><strong>修改时间：</strong>${d.updateTime || '无记录'}</p>
+                `);
+        document.getElementById("detailModal").style.display = "flex";
+      } else {
+        alert("详情加载失败：" + (res.msg || "未知错误"));
+      }
+    }).fail(() => {
+      alert("网络错误，详情加载失败");
+    });
+  }
+
+  // 关闭详情弹窗
+  function closeDetailModal() {
+    document.getElementById("detailModal").style.display = "none";
+  }
+
+  // 上传图片预览+类型校验
+  $("#imageFile").change(function () {
+    let file = this.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("请选择有效的图片文件（jpg/png/jpeg/webp等）");
+      this.value = "";
+      $("#preview").hide().removeAttr("src");
+      return;
+    }
+    let url = URL.createObjectURL(file);
+    $("#preview").attr("src", url).show();
+  });
+
+  // 保存轮播图
+  function saveBanner() {
+    let sort = $("#sort").val().trim();
+    let status = 1;
+    let file = $("#imageFile")[0].files[0];
+    const saveBtn = $("button:contains('保存')");
+    // 表单校验
+    if (!sort || isNaN(sort) || Number(sort) < 0) {
+      alert("请输入有效的非负排序数字");
+      $("#sort").focus();
+      return;
+    }
+    if (!file) {
+      alert("请选择需要上传的轮播图图片");
+      $("#imageFile").focus();
+      return;
+    }
+    // 构造上传表单
+    let formData = new FormData();
+    formData.append("file", file);
+    // 禁用按钮防止重复点击
+    saveBtn.attr("disabled", true).text("上传中...");
+    // 第一步：上传图片
+    $.ajax({
+      url: "/api/banner/upload",
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: res => {
+        if (res.code !== 200) {
+          alert("图片上传失败：" + (res.msg || "上传接口返回异常"));
+          saveBtn.attr("disabled", false).text("保存");
+          return;
+        }
+        let imgUrl = res.data;
+        if (!imgUrl) {
+          alert("图片上传失败：未获取到图片地址");
+          saveBtn.attr("disabled", false).text("保存");
+          return;
+        }
+        // 第二步：保存轮播图信息
+        $.post("/api/banner/add", {
+          sort: Number(sort),
+          status: status,
+          imgUrl: imgUrl
+        }, res => {
+          if (res.code === 200) {
+            alert("添加成功！");
+            closeAddModal();
+            loadList();
+          } else {
+            alert("轮播图保存失败：" + (res.msg || "保存接口返回异常"));
+          }
+          saveBtn.attr("disabled", false).text("保存");
+        }).fail(() => {
+          alert("网络错误，轮播图保存失败");
+          saveBtn.attr("disabled", false).text("保存");
+        });
+      },
+      error: (xhr) => {
+        let errMsg = xhr.responseText || "网络错误，图片上传失败";
+        alert("图片上传失败：" + errMsg);
+        saveBtn.attr("disabled", false).text("保存");
+      }
+    });
+  }
+  // 关键修改3：暴露loadList函数到全局（主页面可调用）
+  window.loadBannerList = loadList;
+  // 页面初始化加载列表
+  $(function () {
+    loadList();
+  });
+</script>
+</body>
+</html>

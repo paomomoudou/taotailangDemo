@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 师资力量页面主体 */
+        
+        .teacher {
+            width: 80%;
+            margin: 0 auto 40px;
+        }
+        
+        .teacher h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        /* 老师卡片布局：2行3列 */
+        
+        .teacher-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 70px;
+        }
+        
+        .teacher-card {
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            /* 鼠标悬浮变小手 */
+        }
+        
+        .teacher-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            padding: 20px 20px 10px 20px;
+        }
+        
+        .teacher-main {
+            margin: 0 10px 10px 10px;
+        }
+        
+        .teacher-name {
+            font-size: 25px;
+            font-weight: bold;
+            color: #EF89A0;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .teacher-title {
+            display: flex;
+            font-size: 16px;
+            color: #EF89A0;
+            margin-top: 2px;
+        }
+        
+        .teacher-desc {
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+        
+        .momo {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        /* 手机端 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .teacher-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .teacher-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var path = window.location.pathname;
+                var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名（如 about）
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <a href="index.html">首页</a><span>&gt;</span>
+        <span>师资力量</span>
+    </div>
+    <!-- 师资力量主体内容 -->
+    <div class="content">
+        <section class="teacher">
+            <div class="teacher-list">
+                <!-- 老师卡片1 -->
+                <div class="teacher-card" onclick="goDetail(1)">
+                    <img src="pic/teacher1.jpg" alt="李老师" class="teacher-img">
+                    <div class="teacher-main">
+                        <div class="teacher-box">
+                            <div class="teacher-name">李老师</div>
+                            <div class="teacher-title"><img src="pic/momo.png" class="momo">桃太郎日语创始人</div>
+                        </div>
+                        <div class="teacher-desc">
+                            <p>资深日语教学经验，日语能力N1</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 老师卡片2 -->
+                <div class="teacher-card" onclick="goDetail(2)">
+                    <img src="pic/teacher2.jpg" alt="王老师" class="teacher-img">
+                    <div class="teacher-main">
+                        <div class="teacher-box">
+                            <div class="teacher-name">王老师</div>
+                            <div class="teacher-title"><img src="pic/momo.png" class="momo">石家庄学院校区校长</div>
+                        </div>
+                        <div class="teacher-desc">
+                            <p>日语教学经验丰富，日语能力N1，多年日本生活经历</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 老师卡片3 -->
+                <div class="teacher-card" onclick="goDetail(3)">
+                    <img src="pic/teacher3.jpg" alt="王老师" class="teacher-img">
+                    <div class="teacher-main">
+                        <div class="teacher-box">
+                            <div class="teacher-name">王老师</div>
+                            <div class="teacher-title"><img src="pic/momo.png" class="momo">首席教师</div>
+                        </div>
+                        <div class="teacher-desc">
+                            <p>日语教学经验丰富，日语能力N1</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+    <script>
+        // 跳转函数：拼接URL参数
+        function goDetail(id) {
+            // 跳转到 teacherInfo.html，并携带 id 参数
+            location.href = `teacherInfo.html?id=${id}`;
+        }
+    </script>
+</body>
+
+</html>

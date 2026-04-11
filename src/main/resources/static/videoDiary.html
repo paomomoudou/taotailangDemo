@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        
+        .page-title {
+            text-align: center;
+            font-size: 26px;
+            margin: 20px 0 30px;
+        }
+        /* 四列布局 */
+        
+        .diary-list {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        /* 手机端自动变1列 */
+        
+        @media (max-width: 768px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .diary-list {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+        /* 单个视频日记项 */
+        
+        .diary-item {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            /* 小手 */
+            transition: 0.3s;
+            padding: 10px;
+        }
+        
+        .diary-item:hover {
+            transform: translateY(-3px);
+        }
+        /* 图片 */
+        
+        .diary-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+        /* 文字内容 */
+        
+        .diary-info {
+            padding: 12px;
+        }
+        
+        .diary-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        
+        .diary-time {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html", function() {
+                // 导航加载完成后，自动设置当前页高亮
+                var path = window.location.pathname;
+                var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名
+                $("[data-page='" + page + "']").addClass("active");
+            });
+        });
+    </script>
+    <div class="content">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a><span>&gt;</span>
+            <span>视频日记</span>
+        </div>
+        <h2 class="page-title">视频日记</h2>
+
+        <div class="diary-list" id="diaryBox">
+
+            <!-- 项目1 -->
+            <div class="diary-item" onclick="goDetail(1)">
+                <img src="pic/video1.jpg" alt="视频封面">
+                <div class="diary-info">
+                    <div class="diary-title">寿司会</div>
+                    <div class="diary-time">2026-03-17</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+    <script>
+        // 页面加载就请求后台
+        $(function(){
+            $.get("/api/diary/list", function(res){
+                let html = "";
+                res.data.records.forEach(item=>{
+                    if(item.mediaType === "video"){
+                        html += `<div class="diary-item" onclick="goDetail(${item.id})">
+<img src="pic/momo_1.png" alt="">
+<div class="diary-info"><div class="diary-title">${item.title}</div>
+<div class="diary-time">${formatDate(item.publishTime)}</div></div>
+</div>`;
+                    }else {
+                        html += `<div class="diary-item" onclick="goDetail(${item.id})">
+<img src="${item.mediaUrl}" alt="${item.title}">
+<div class="diary-info"><div class="diary-title">${item.title}</div>
+<div class="diary-time">${formatDate(item.publishTime)}</div></div>
+</div>`;
+                    }
+
+                })
+                $("#diaryBox").html(html);
+            })
+        })
+        // 跳转到详情页，传id
+        function goDetail(id) {
+            location.href = `videoDetail.html?id=${id}`;
+        }
+        // 时间格式化工具函数（与轮播图页面统一）
+        function formatDate(dateStr) {
+            if (!dateStr) return '无记录';
+            const date = new Date(dateStr);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="pic/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        /* 面包屑导航 */
+        
+        .breadcrumb {
+            width: 90%;
+            margin: 20px auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #666;
+        }
+        
+        .breadcrumb a:hover {
+            color: #EF89A0;
+        }
+        
+        .breadcrumb span {
+            margin: 0 5px;
+        }
+        /* 课程特色主体 */
+        
+        .feature {
+            width: 90%;
+            margin: 0 auto 40px;
+        }
+        
+        .feature h2 {
+            text-align: center;
+            font-size: 26px;
+            margin-bottom: 40px;
+        }
+        /* 每行特色项 */
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        /* 左侧图片 */
+        
+        .feature-img {
+            width: 220px;
+            height: 160px;
+            flex-shrink: 0;
+        }
+        
+        .feature-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        /* 右侧文字区域 */
+        
+        .feature-content {
+            flex: 1;
+        }
+        /* 标题 + 两侧桃子图标 */
+        
+        .feature-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .peach-icon {
+            width: 25px;
+            height: 25px;
+            object-fit: contain;
+        }
+        
+        .feature-title h3 {
+            font-size: 26px;
+            font-weight: bold;
+        }
+        /* 介绍文字 */
+        
+        .feature-desc {
+            font-size: 20px;
+            line-height: 1.8;
+        }
+        /* 底部 */
+        
+        footer {
+            background: #EF89A0;
+            color: #fff;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: auto;
+        }
+        /* 手机端 */
+        
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+            .nav-list>li {
+                padding: 14px 5%;
+            }
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+            .hamburger {
+                display: block;
+            }
+            #menu-toggle:checked+.nav-list {
+                display: flex;
+            }
+            .feature-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            .feature-img {
+                width: 100%;
+                height: auto;
+            }
+            .feature-title {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 引用导航 -->
+    <div id="nav-box"></div>
+    <script>
+        $(function() {
+            $("#nav-box").load("nav.html");
+        });
+    </script>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <a href="index.html">首页</a><span>&gt;</span>
+        <span>沉浸式活动</span>
+    </div>
+    <!-- 沉浸式活动主体内容 -->
+    <div class="content">
+        <section class="feature">
+            <h2>🎉 沉浸式活动 🎉</h2>
+
+            <!-- 第1行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/imm1.jpg" alt="趣味课堂">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>月度主题文化活动</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        每月定期举办特色日语文化活动，如日式寿司制作、狼人杀日语局、包饺子体验、麻薯DIY、日式汤品料理，咖啡文化等，让学生在动手实践中感受日本文化。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第2行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/imm2.jpg" alt="精品小班">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>语言竞技类活动</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        举办日语演讲比赛、配音大赛等，为学生提供展示语言能力的舞台，激发学习热情与表达欲。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第3行 -->
+            <div class="feature-item">
+                <div class="feature-img">
+                    <img src="pic/imm3.jpg" alt="多元班">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-title">
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                        <h3>社交与学习融合</h3>
+                        <img src="pic/momo.png" alt="桃子" class="peach-icon">
+                    </div>
+                    <div class="feature-desc">
+                        通过轻松有趣的集体活动，营造沉浸式日语环境，让学生在互动中自然运用日语，提升语感与交流能力。
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 引用底部 -->
+    <div id="footer-box"></div>
+    <script>
+        $("#footer-box").load("footer.html");
+    </script>
+    <!-- 引入右下角飘窗 -->
+    <div id="float-container"></div>
+    <script>
+        // 使用 fetch 引入公共文件
+        fetch('float.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('float-container').innerHTML = data;
+            });
+    </script>
+</body>
+
+</html>

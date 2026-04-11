@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石家庄桃太郎日本语</title>
+    <link rel="icon" href="/pic/logo.png" type="image/png">
+    <link rel="stylesheet" href="css/common.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <!-- 关键：让手机正确识别视口 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        /* 轮播 + 右侧联系 */
+
+        .banner-section {
+            width: 90%;
+            margin: 20px auto;
+            display: flex;
+            gap: 20px;
+        }
+
+        .banner {
+            width: 75%;
+            height: 360px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner-slide {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            animation: slideAuto linear infinite;
+        }
+
+        .banner-slide img {
+            width: 100vw;
+            height: 400px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideAuto {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .banner-contact {
+            width: 25%;
+            background: #FCE4E7;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .banner-contact a {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #fff;
+            color: #EF89A0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* 优势 */
+
+        .advantage {
+            width: 90%;
+            margin: 40px auto;
+            text-align: center;
+        }
+
+        .advantage h2 {
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .advantage-box {
+            display: flex;
+            gap: 20px;
+        }
+
+        .adv-item {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            /* 鼠标悬浮变小手 */
+        }
+
+        .adv-item h3 {
+            font-size: 25px;
+            margin-top: 10px;
+            color: #EF89A0;
+        }
+
+        /* 标语 */
+
+        .section {
+            width: 90%;
+            margin: 40px auto;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .title {
+            font-size: 28px;
+            margin: 10px;
+            padding-top: 20px;
+        }
+
+        .title span {
+            color: #EB7E98;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 最外层容器，用来放环绕布局 */
+
+        .wrap {
+            position: relative;
+            width: 100%;
+            max-width: 850px;
+            height: 600px;
+            margin: 5px auto;
+        }
+
+        /* 中间圆 + 柔和扩散波纹 */
+
+        .center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: #EB7E98;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        /* 扩散波纹动画（柔和、不晃眼） */
+
+        .center::before,
+        .center::after {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: rgba(238, 136, 121, 0.3);
+            border-radius: 50%;
+            z-index: -1;
+            animation: wave 4s infinite linear;
+        }
+
+        .center::after {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        /* 模块卡片 */
+
+        .card {
+            position: absolute;
+            width: 300px;
+            padding: 16px;
+            background: #FCE4E7;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        /* 鼠标放上去：轻微靠近中心，不抖动、不乱跑 */
+
+        .card:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 4px 16px rgba(238, 136, 58, 0.2);
+        }
+
+        /* 真正环绕布局：6个均匀绕圆排列 */
+
+        .card1 {
+            left: 50%;
+            top: 15%;
+            transform: translate(-50%, -50%);
+        }
+
+        .card2 {
+            left: 12%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+        }
+
+        .card3 {
+            left: 12%;
+            top: 70%;
+            transform: translate(-50%, -50%);
+        }
+
+        .card4 {
+            left: 50%;
+            top: 85%;
+            transform: translate(-50%, -50%);
+        }
+
+        .card5 {
+            left: 88%;
+            top: 70%;
+            transform: translate(-50%, -50%);
+        }
+
+        .card6 {
+            left: 88%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+        }
+
+        .num {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            background: #EB7E98;
+            color: #fff;
+            font-size: 12px;
+            border-radius: 50%;
+            margin-bottom: 6px;
+        }
+
+        .card h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* 热门课程整体布局 */
+
+        .course {
+            width: 90%;
+            margin: 40px auto;
+        }
+
+        .course h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* 两列网格布局 */
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* 单个课程卡片 */
+
+        .course-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 左侧图标 */
+
+        .course-left {
+            flex-shrink: 0;
+        }
+
+        .course-icon {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+
+        /* 中间文字区域 */
+
+        .course-middle {
+            flex: 1;
+            cursor: pointer;
+            /* 鼠标悬浮变小手 */
+        }
+
+        .course-middle h3 {
+            color: #EF89A0;
+            /* 粉色标题 */
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .course-middle p {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* 更多按钮（桃子背景） */
+
+        .course-more-wrapper {
+            text-align: center;
+        }
+
+        .course-more {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 80px;
+            color: #fff;
+            font-size: 14px;
+            background: url(pic/momo.png) no-repeat center;
+            background-size: contain;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        /* 校区：图片 + 文字 + 真实地图 */
+
+        .campus {
+            width: 90%;
+            margin: 40px auto;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .campus h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .campus-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .campus-img {
+            height: 260px;
+        }
+
+        .campus-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .campus-info {
+            flex: 1;
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        .map-img {
+            height: 260px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        /* 手机端 */
+
+        @media (max-width: 992px) {
+            .tel {
+                display: block;
+            }
+
+            .nav-list {
+                display: none;
+                flex-direction: column;
+            }
+
+            .nav-list > li {
+                padding: 14px 5%;
+            }
+
+            .submenu {
+                position: static;
+                width: 100%;
+                min-width: 100px !important;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            #menu-toggle:checked + .nav-list {
+                display: flex;
+            }
+
+            .banner-section {
+                flex-direction: column;
+            }
+
+            .banner,
+            .banner-contact {
+                width: 100%;
+            }
+
+            .card {
+                padding: 8px;
+                width: 28%;
+            }
+
+            .advantage-box,
+            .campus {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .course-grid,
+            .campus-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- 引用导航 -->
+<div id="nav-box"></div>
+<script>
+    $(function () {
+        $("#nav-box").load("nav.html", function () {
+            // 导航加载完成后，自动设置当前页高亮
+            var path = window.location.pathname;
+            var page = path.split("/").pop().replace(".html", ""); // 拿到当前页面名
+            $("[data-page='" + page + "']").addClass("active");
+        });
+    });
+</script>
+<div class="content">
+    <!-- 3 轮播 + 联系 -->
+    <div class="banner-section">
+        <div class="banner" id="bannerBox">
+            <div class="banner-slide" id="slideContainer">
+                <!-- 内容由JS自动填充 -->
+            </div>
+        </div>
+        <div class="banner-contact">
+            <img src="pic/free.png">
+            <a href="tel:15931212710">拨打电话</a>
+        </div>
+    </div>
+
+    <!-- 4 优势 -->
+    <section class="advantage">
+        <h2>我们的优势</h2>
+        <div class="advantage-box">
+            <div class="adv-item" onclick="accompany()"><img src="pic/adv1.jpg">
+                <h3>陪伴式教学</h3>
+            </div>
+            <div class="adv-item" onclick="customiza()"><img src="pic/adv2.jpg">
+                <h3>定制化课程</h3>
+            </div>
+            <div class="adv-item" onclick="immersive()"><img src="pic/adv3.jpg">
+                <h3>沉浸式活动</h3>
+            </div>
+            <div class="adv-item" onclick="multimode()"><img src="pic/adv4.jpg">
+                <h3>多模式授课</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5 标语 -->
+    <div class="section">
+        <h2 class="title">从零基础到赴日就职 <span>我们陪你走完每一步</span></h2>
+        <p class="sub-title">全流程精细化陪伴服务 · 科学完善的教学服务体系</p>
+
+        <div class="wrap">
+            <!-- 中间圆 -->
+            <div class="center">
+                桃太郎日本语<br>服务体系
+            </div>
+
+            <!-- 6个环绕模块 -->
+            <div class="card card1">
+                <div class="num">01</div>
+                <h4>评估规划</h4>
+                <p>开展精准入学水平测试，结合学员日语基础与未来目标，量身定制专属学习规划与升学路径</p>
+            </div>
+            <div class="card card2">
+                <div class="num">02</div>
+                <h4>课程学习</h4>
+                <p>覆盖小班/一对一/小班等多元班型，集结资深日教师资，打造沉浸式互动教学体验</p>
+            </div>
+            <div class="card card3">
+                <div class="num">03</div>
+                <h4>课后反馈</h4>
+                <p>阶段性模考复盘，输出专业学习诊断报告，动态调整教学策略，确保学习效果可视化</p>
+            </div>
+            <div class="card card4">
+                <div class="num">04</div>
+                <h4>多对一服务</h4>
+                <p>专属学管+主讲老师双轨督导，日常答疑与心理疏导同步进行，学习进度全方位可视化管控</p>
+            </div>
+            <div class="card card5">
+                <div class="num">05</div>
+                <h4>文化体验</h4>
+                <p>定期举办寿司、动漫、面试模拟等日式文化实践活动，强化口语表达与跨文化适应力</p>
+            </div>
+            <div class="card card6">
+                <div class="num">06</div>
+                <h4>留学衔接</h4>
+                <p>全程跟进日语应试与应用能力提升，同步提供院校选申、在留资格等全链条留学管家服务</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 热门课程 -->
+    <section class="course">
+        <h2>热门课程</h2>
+        <div class="course-grid">
+            <!-- 课程1：暑假日语课程 -->
+            <div class="course-card">
+                <div class="course-left">
+                    <img src="pic/hot_course_1.png" alt="暑假日语课程" class="course-icon">
+                </div>
+                <div class="course-middle" onclick="goDetail(1)">
+                    <h3>暑假日语课程</h3>
+                    <p>假期高效提升，零基础快速入门</p>
+                </div>
+            </div>
+
+            <!-- 课程2：考研日语课程 -->
+            <div class="course-card">
+                <div class="course-left">
+                    <!-- 可替换为你自己的图标 -->
+                    <img src="pic/hot_course_2.png" alt="考研日语课程" class="course-icon">
+                </div>
+                <div class="course-middle" onclick="goDetail(2)">
+                    <h3>考研日语课程</h3>
+                    <p>203考研专项，考点精讲稳提分</p>
+                </div>
+            </div>
+
+            <!-- 课程3：留学口语课程 -->
+            <div class="course-card">
+                <div class="course-left">
+                    <img src="pic/hot_course_3.png" alt="留学口语课程" class="course-icon">
+                </div>
+                <div class="course-middle" onclick="goDetail(3)">
+                    <h3>留学口语课程</h3>
+                    <p>实景对话训练，赴日交流零障碍</p>
+                </div>
+            </div>
+
+            <!-- 课程4：免费试听课 -->
+            <div class="course-card">
+                <div class="course-left">
+                    <img src="pic/hot_course_4.png" alt="免费试听课" class="course-icon">
+                </div>
+                <div class="course-middle" onclick="goDetail(4)">
+                    <h3>免费试听课</h3>
+                    <p>0元体验精品课，专业老师一对一</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部更多按钮（桃子背景） -->
+        <div class="course-more-wrapper">
+            <a href="course.html" class="course-more">更多</a>
+        </div>
+    </section>
+
+    <!-- 7 校区 + 直接显示地图（无404） -->
+    <section class="campus">
+        <h2>校区地址</h2>
+        <div class="campus-grid">
+            <div class="campus-img">
+                <img src="pic/school.jpg" alt="校区环境">
+            </div>
+            <div class="campus-info">
+                <p>桃太郎日本语</p>
+                <p>地址：河北省石家庄市筑业高新国际A座12H</p>
+                <p>电话： 15931212710 <span style="font-weight: bold;color: #000; margin: 0 5px;">|</span> 15032802517
+                </p>
+                <p>营业时间：8:00-21:00</p>
+            </div>
+            <img class="map-img" src="pic/address.jpg" alt="地图">
+        </div>
+    </section>
+</div>
+
+<!-- 引用底部 -->
+<div id="footer-box"></div>
+<script>
+    $("#footer-box").load("footer.html");
+</script>
+<!-- 引入右下角飘窗 -->
+<div id="float-container"></div>
+<script>
+    // 使用 fetch 引入公共文件
+    fetch('float.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('float-container').innerHTML = data;
+        });
+</script>
+<script>
+    function accompany() {
+        location.href = `accompany.html`;
+    }
+
+    function customiza() {
+        location.href = `customiza.html`;
+    }
+
+    function immersive() {
+        location.href = `immersive.html`;
+    }
+
+    function multimode() {
+        location.href = `multimode.html`;
+    }
+
+    // 跳转函数：拼接URL参数
+    function goDetail(id) {
+        // 跳转到 hotcourseInfo.html，并携带 id 参数
+        location.href = `hotcourseInfo.html?id=${id}`;
+    }
+</script>
+<script>
+    // 页面加载就请求后台
+    $(function () {
+        //1. 请求轮播图接口
+        $.get("/api/banner/list",{status:1}, function (res) {
+            if (res.code !== 200) {
+                console.error("轮播图接口请求失败");
+                return;
+            }
+            // 过滤启用的轮播图
+            const bannerList = res.data.records.filter(item => item.status === 1);
+            const len = bannerList.length;
+            if (len === 0) return;
+
+            // 2. 渲染轮播图（最后多拼接一张第一张，实现无缝衔接）
+            let html = "";
+            bannerList.forEach(item => {
+                html += `<img src="${item.imgUrl}" alt="轮播图">`;
+            });
+            // 无缝衔接：最后加第一张图
+            html += `<img src="${bannerList[0].imgUrl}" alt="轮播图">`;
+            $("#slideContainer").html(html);
+
+            // 3. 动态生成@keyframes，适配当前张数
+            createSlideAnimation(len);
+        }).fail(function () {
+            console.error("轮播图接口请求异常");
+        });
+    })
+
+    // 动态生成轮播动画关键帧
+    function createSlideAnimation(imgCount) {
+        // 每张图停留时间占比（可调整，比如20%表示每张停20%的总时长）
+        const stayPercent = 20;
+        // 切换动画时间占比（5%表示切换用5%的总时长）
+        const switchPercent = 5;
+
+        let keyframes = "@keyframes slideAuto { 0% { transform: translateX(0); }";
+        let currentPercent = 0;
+
+        for (let i = 0; i < imgCount; i++) {
+            // 停留阶段：当前位置停留stayPercent%时长
+            currentPercent += stayPercent;
+            keyframes += `
+      ${currentPercent}% { transform: translateX(-${i * 100}%); }
+    `;
+            // 切换阶段：用switchPercent%时长滑到下一张
+            currentPercent += switchPercent;
+            keyframes += `
+      ${currentPercent}% { transform: translateX(-${(i + 1) * 100}%); }
+    `;
+        }
+
+        // 最后回到0（因为最后多了一张第一张，实现无缝）
+        keyframes += `100% { transform: translateX(-${imgCount * 100}%); } }`;
+
+        // 把动态生成的@keyframes插入到页面
+        const style = document.createElement("style");
+        style.innerHTML = keyframes;
+        // 设置动画时长：每张图1秒（可调整，比如3*imgCount秒）
+        style.innerHTML += `
+    #slideContainer {
+      animation-duration: ${imgCount * 1.5}s !important;
+    }
+  `;
+        document.head.appendChild(style);
+    }
+</script>
+</body>
+
+</html>

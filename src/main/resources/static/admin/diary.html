@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日记管理</title>
+    <style>
+        /* 全局样式与现有系统统一 */
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html,body{font-family:"Microsoft Yahei",sans-serif;background:#f5f5f5;}
+        a{text-decoration:none;color:inherit;}
+        input,button{outline:none;border:1px solid #ddd;border-radius:4px;padding:0 10px;}
+        input:focus{border-color:#EB7E98;box-shadow:0 0 0 2px rgba(235,126,152,.2);}
+        button{cursor:pointer;border-radius:4px;}
+        /* 页面主容器 */
+        .container{width:100%;max-width:1200px;margin:0 auto;padding:0 10px;}
+        .mt-4{margin-top:16px;}
+        .mb-3{margin-bottom:12px;}
+        /* 标题 & 按钮通用样式 */
+        h3{font-size:18px;color:#333;margin-bottom:16px;padding-top:16px;}
+        .btn{padding:8px 16px;font-size:14px;}
+        .btn-primary{background:#EB7E98;color:#fff;}
+        .btn-primary:hover{background:#e86588;}
+        .btn-success{background:#52c41a;color:#fff;}
+        .btn-success:hover{background:#47a814;}
+        .btn-secondary{background:#eee;color:#666;}
+        .btn-secondary:hover{background:#e5e5e5;}
+        .btn-danger{background:#ff4d4f;color:#fff;}
+        .btn-danger:hover{background:#ff7875;}
+        .btn-sm{padding:4px 8px;font-size:12px;}
+        /* 表格列表样式 */
+        .diary-table{width:100%;background:#fff;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-collapse:collapse;overflow:hidden;}
+        .diary-table thead{background:#f8f8f8;}
+        .diary-table th,.diary-table td{padding:12px 8px;text-align:center;border-bottom:1px solid #eee;}
+        .diary-table th{font-size:14px;color:#666;font-weight:normal;}
+        .diary-table td{font-size:14px;color:#333;vertical-align:middle;}
+        .diary-table tr:last-child td{border-bottom:0;}
+        /* 媒体预览样式 */
+        .media-preview{width:100%;max-height:300px;object-fit:contain;margin-top:10px;border-radius:6px;}
+        .diary-media{width:80px;height:50px;object-fit:cover;border-radius:4px;}
+        .video-preview{width:100%;max-height:300px;border-radius:6px;margin-top:10px;}
+        /* 分页样式 */
+        .pagination{display:flex;justify-content:center;list-style:none;margin-top:20px;gap:4px;padding-bottom:20px;}
+        .page-item{height:32px;line-height:32px;}
+        .page-link{display:inline-block;padding:0 12px;height:100%;border-radius:4px;background:#fff;border:1px solid #eee;color:#666;font-size:14px;}
+        .page-item.active .page-link{background:#EB7E98;color:#fff;border-color:#EB7E98;}
+        .page-link:hover{background:#f5f5f5;}
+        /* 弹窗样式（与现有系统统一） */
+        .mask{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:99999;cursor:pointer;}
+        .modal{width:90%;max-width:700px;background:#fff;padding:30px;border-radius:12px;cursor:default;box-shadow:0 4px 20px rgba(0,0,0,.15);position:relative;}
+        .modal-header{margin-bottom:25px;padding-bottom:0;border-bottom:none;}
+        .modal-header h5{font-size:24px;color:#333;margin:0;font-weight:600;}
+        .modal-body{margin-bottom:30px;text-align:left;}
+        .form-item{margin-bottom:20px;display:flex;flex-direction:column;gap:8px;}
+        .form-item label{font-size:16px;color:#333;font-weight:500;}
+        .form-item input{height:44px;line-height:44px;padding:0 15px;font-size:14px;}
+        /* 详情弹窗样式 */
+        .detail-content{background:#f8f8f8;padding:16px;border-radius:6px;margin-top:10px;}
+        .media-type-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;color:#fff;margin-right:8px;}
+        .tag-image{background:#52c41a;}
+        .tag-video{background:#1890ff;}
+        /* 空数据提示 */
+        .empty-tip{width:100%;background:#fff;text-align:center;padding:80px 0;color:#999;font-size:14px;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:20px;}
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .diary-table th,.diary-table td{padding:8px 4px;}
+            .diary-media{width:60px;height:40px;}
+            .btn-sm{padding:2px 6px;font-size:12px;}
+            .modal{padding:20px;}
+            .modal-header h5{font-size:20px;}
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h3>日记管理</h3>
+    <!-- 新增按钮 -->
+    <button class="btn btn-success mb-3" onclick="openAddModal()">新增日记</button>
+    <!-- 日记列表 -->
+    <div id="diaryList">
+        <!-- 动态渲染列表 -->
+    </div>
+    <!-- 分页 -->
+    <nav>
+        <ul class="pagination" id="diaryPagination">
+            <!-- 动态渲染分页 -->
+        </ul>
+    </nav>
+</div>
+
+<!-- 新增日记弹窗 -->
+<div class="mask" id="addModal" onclick="closeAddModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h5>新增日记</h5>
+        </div>
+        <div class="modal-body">
+            <div class="form-item">
+                <label>日记标题</label>
+                <input type="text" id="diaryTitle" placeholder="请输入日记标题">
+            </div>
+            <div class="form-item">
+                <label>上传媒体（图片/视频）</label>
+                <input type="file" id="diaryMedia" accept="image/*,video/*"> <!-- 支持图片和视频 -->
+                <!-- 图片预览 -->
+                <img id="imgPreview" class="media-preview" style="display:none;">
+                <!-- 视频预览 -->
+                <video id="videoPreview" class="video-preview" controls style="display:none;"></video>
+            </div>
+        </div>
+        <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:15px;">
+            <button class="btn-secondary" onclick="closeAddModal()">取消</button>
+            <button class="btn-primary" onclick="saveDiary()">确定</button>
+        </div>
+    </div>
+</div>
+
+<!-- 日记详情弹窗 -->
+<div class="mask" id="detailModal" onclick="closeDetailModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h5>日记详情</h5>
+        </div>
+        <div class="modal-body" id="detailBody">
+            <!-- 动态渲染详情 -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeDetailModal()">关闭</button>
+        </div>
+    </div>
+</div>
+
+<!-- 删除确认弹窗 -->
+<div class="mask" id="delModal" onclick="closeDelModal()">
+    <div class="modal modal-sm" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h5>确认删除</h5>
+        </div>
+        <div class="modal-body">
+            确定要删除该日记吗？<br>删除后将无法恢复！
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeDelModal()">取消</button>
+            <button class="btn-danger" onclick="confirmDelDiary()">确认删除</button>
+        </div>
+    </div>
+</div>
+
+<!-- 依赖主页面的jQuery，无需重复引入 -->
+<script>
+    // 复用主页面全局变量，仅赋值不声明
+    diaryCurrentPage = 1;
+    currentDiaryId = null;
+    mediaUrl = ""; // 存储媒体（图片/视频）地址
+    mediaType = ""; // 存储媒体类型（image/video）
+
+    // 时间格式化工具函数（与现有系统统一）
+    function formatDate(dateStr) {
+        if (!dateStr) return '无记录';
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}年${month}月${day}日`;
+    }
+
+    // 加载日记列表
+    function loadDiaryList() {
+        $("#diaryList").html(`<div class="empty-tip">数据加载中...</div>`);
+        // 调用后端接口：分页查询日记
+        $.get(`/api/diary/list?page=${diaryCurrentPage}&size=${diaryPageSize}`, res => {
+            let list = res.data?.records || [];
+            let html = "";
+            if (list.length === 0) {
+                html = `<div class="empty-tip">暂无日记数据</div>`;
+            } else {
+                html = `
+<table class="diary-table">
+  <thead>
+    <tr>
+      <th>日记编号</th>
+      <th>标题</th>
+      <th>媒体类型</th>
+      <th>发布时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+`;
+                // 日记编号从1开始连续排序（按分页计算起始编号）
+                const startNum = (diaryCurrentPage - 1) * diaryPageSize + 1;
+                list.forEach((item, index) => {
+                    const serialNum = startNum + index;
+                    const type = item.mediaType;
+                    const typeText = type === 'image' ? '图片' : '视频';
+                    const typeTag = type === 'image' ? '<span class="media-type-tag tag-image">图片</span>' : '<span class="media-type-tag tag-video">视频</span>';
+                    html += `
+    <tr>
+      <td>${serialNum}</td>
+      <td>${item.title || '-'}</td>
+      <td>${typeTag}${typeText}</td>
+      <td>${formatDate(item.publishTime)}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="openDetailModal(${item.id})">详情</button>
+        <button class="btn btn-sm btn-danger" style="margin-left:6px;" onclick="showDelModal(${item.id})">删除</button>
+      </td>
+    </tr>
+`;
+                });
+                html += `
+  </tbody>
+</table>
+`;
+            }
+            $("#diaryList").html(html);
+            // 渲染分页
+            let pages = res.data?.pages || 1;
+            let pageHtml = "";
+            for (let i = 1; i <= pages; i++) {
+                pageHtml += `<li class="page-item ${i==diaryCurrentPage?'active':''}">
+                      <a class="page-link" href="javascript:goDiaryPage(${i})">${i}</a>
+                    </li>`;
+            }
+            $("#diaryPagination").html(pageHtml);
+        }).fail(() => {
+            $("#diaryList").html(`<div class="empty-tip" style="color:#f5222d;">数据加载失败</div>`);
+        });
+    }
+
+    // 切换日记分页
+    function goDiaryPage(p) {
+        if (p === diaryCurrentPage) return;
+        diaryCurrentPage = p;
+        loadDiaryList();
+    }
+
+    // 打开新增日记弹窗
+    function openAddModal() {
+        $("#diaryTitle").val("");
+        $("#diaryMedia").val("");
+        $("#imgPreview").hide().removeAttr("src");
+        $("#videoPreview").hide().removeAttr("src");
+        mediaUrl = "";
+        mediaType = "";
+        document.getElementById("addModal").style.display = "flex";
+    }
+
+    // 关闭新增日记弹窗
+    function closeAddModal() {
+        document.getElementById("addModal").style.display = "none";
+    }
+
+    // 媒体文件上传预览+上传到后端
+    $("#diaryMedia").change(function () {
+        let file = this.files[0];
+        if (!file) return;
+
+        // 校验文件大小（图片≤5MB，视频≤50MB）
+        const fileSize = file.size;
+        if (file.type.startsWith("image/") && fileSize > 5 * 1024 * 1024) {
+            alert("图片大小不能超过5MB");
+            this.value = "";
+            return;
+        }
+        if (file.type.startsWith("video/") && fileSize > 50 * 1024 * 1024) {
+            alert("视频大小不能超过50MB");
+            this.value = "";
+            return;
+        }
+
+        // 预览文件
+        const fileUrl = URL.createObjectURL(file);
+        if (file.type.startsWith("image/")) {
+            // 图片预览
+            mediaType = "image";
+            $("#imgPreview").attr("src", fileUrl).show();
+            $("#videoPreview").hide();
+        } else if (file.type.startsWith("video/")) {
+            // 视频预览
+            mediaType = "video";
+            $("#videoPreview").attr("src", fileUrl).show();
+            $("#imgPreview").hide();
+        } else {
+            alert("仅支持图片和视频格式");
+            this.value = "";
+            return;
+        }
+
+        // 上传文件到后端
+        let formData = new FormData();
+        formData.append("file", file);
+        $.ajax({
+            url: "/api/diary/upload", // 后端媒体上传接口
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: res => {
+                if (res.code === 200) {
+                    mediaUrl = res.data; // 保存后端返回的媒体地址
+                } else {
+                    alert("媒体上传失败：" + (res.msg || "上传失败"));
+                    this.value = "";
+                    $("#imgPreview").hide();
+                    $("#videoPreview").hide();
+                }
+            },
+            error: () => {
+                alert("网络错误，媒体上传失败");
+                this.value = "";
+                $("#imgPreview").hide();
+                $("#videoPreview").hide();
+            }
+        });
+    });
+
+    // 保存日记（新增）
+    function saveDiary() {
+        const title = $("#diaryTitle").val().trim();
+
+        // 表单校验
+        if (!title) { alert("请输入日记标题"); $("#diaryTitle").focus(); return; }
+        if (!mediaUrl) { alert("请上传图片或视频"); $("#diaryMedia").focus(); return; }
+
+        // 构造请求参数（JSON格式）
+        const params = {
+            title,
+            mediaUrl: mediaUrl, // 媒体地址
+            mediaType: mediaType, // 媒体类型（image/video）
+            publishTime: new Date().toISOString() // 发布时间默认当前时间
+        };
+
+        // 调用后端新增接口
+        $.ajax({
+            url: "/api/diary/add",
+            type: "POST",
+            data: JSON.stringify(params),
+            contentType: "application/json", // 指定JSON格式
+            success: res => {
+                if (res.code === 200) {
+                    alert("新增成功！");
+                    closeAddModal();
+                    loadDiaryList(); // 重新加载列表
+                } else {
+                    alert("新增失败：" + (res.msg || "未知错误"));
+                }
+            },
+            error: () => {
+                alert("网络错误，新增失败");
+            }
+        });
+    }
+
+    // 打开日记详情弹窗
+    function openDetailModal(id) {
+        currentDiaryId = id;
+        // 调用后端详情接口
+        $.get(`/api/diary/detail/${id}`, res => {
+            if (res.code === 200) {
+                let d = res.data;
+                let mediaHtml = "";
+                if (d.mediaType === "image") {
+                    // 图片详情
+                    mediaHtml = `<img src="${d.mediaUrl}" class="media-preview">`;
+                } else if (d.mediaType === "video") {
+                    // 视频详情
+                    mediaHtml = `<video src="${d.mediaUrl}" class="video-preview" controls></video>`;
+                }
+                // 渲染详情
+                $("#detailBody").html(`
+          <p><strong>日记标题：</strong>${d.title || '-'}</p>
+          <p><strong>媒体类型：</strong>${d.mediaType === 'image' ? '<span class="media-type-tag tag-image">图片</span>' : '<span class="media-type-tag tag-video">视频</span>'}</p>
+          <p><strong>发布时间：</strong>${formatDate(d.publishTime)}</p>
+          <div class="detail-content">${mediaHtml}</div>
+        `);
+                document.getElementById("detailModal").style.display = "flex";
+            } else {
+                alert("加载详情失败：" + (res.msg || "未知错误"));
+            }
+        }).fail(() => {
+            alert("网络错误，加载详情失败");
+        });
+    }
+
+    // 关闭详情弹窗
+    function closeDetailModal() {
+        document.getElementById("detailModal").style.display = "none";
+        currentDiaryId = null;
+    }
+
+    // 显示删除确认弹窗
+    function showDelModal(id) {
+        currentDiaryId = id;
+        document.getElementById("delModal").style.display = "flex";
+    }
+
+    // 关闭删除弹窗
+    function closeDelModal() {
+        document.getElementById("delModal").style.display = "none";
+        currentDiaryId = null;
+    }
+
+    // 确认删除日记
+    function confirmDelDiary() {
+        if (!currentDiaryId) return;
+        // 调用后端删除接口
+        $.ajax({
+            url: "/api/diary/delete",
+            type: "POST",
+            data: JSON.stringify({ id: currentDiaryId }),
+            contentType: "application/json",
+            success: res => {
+                if (res.code === 200) {
+                    alert("删除成功！");
+                    closeDelModal();
+                    loadDiaryList(); // 重新加载列表
+                } else {
+                    alert("删除失败：" + (res.msg || "未知错误"));
+                }
+            },
+            error: () => {
+                alert("网络错误，删除失败");
+                closeDelModal();
+            }
+        });
+    }
+
+    // 暴露全局函数，供主页面调用（解决二次切换不显示问题）
+    window.loadDiaryList = loadDiaryList;
+
+    // 页面初始化加载
+    $(function () {
+        loadDiaryList();
+    });
+</script>
+</body>
+</html>
