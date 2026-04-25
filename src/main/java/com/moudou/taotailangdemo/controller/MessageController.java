@@ -20,7 +20,6 @@ import java.util.UUID;
 public class MessageController {
     @Resource
     private MessageService messageService;
-    private static final String BASE_URL = "http://localhost:8080"; // 后端基础地址
     // 时间格式化器：全局统一，避免重复创建
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
     // 分页查询消息（支持按类型检索）
@@ -82,7 +81,7 @@ public class MessageController {
         File dir = new File(uploadPath);
         if (!dir.exists()) dir.mkdirs();
         file.transferTo(new File(uploadPath + fileName));
-        String imgUrl = BASE_URL + "/upload/message/" + fileName;
+        String imgUrl = "/upload/message/" + fileName;
         return Result.success((Object)imgUrl);
     }
 }

@@ -3,11 +3,9 @@ package com.moudou.taotailangdemo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.moudou.taotailangdemo.entity.Banner;
 import com.moudou.taotailangdemo.entity.Diary;
 import com.moudou.taotailangdemo.service.DiaryService;
 import com.moudou.taotailangdemo.vo.DiaryVo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +21,6 @@ import java.util.UUID;
 public class DiaryController {
     @Autowired
     private DiaryService diaryService;
-    // 后端服务基础地址（替换为你的实际IP+端口）
-    private static final String BASE_URL = "http://localhost:8080";
     // 时间格式化器：全局统一，避免重复创建
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
     // 分页查询日记
@@ -88,7 +84,7 @@ public class DiaryController {
         File destFile = new File(uploadPath + fileName);
         file.transferTo(destFile);
         // 5. 拼接可访问的网络地址
-        String mediaUrl = BASE_URL + "/upload/diary/" + fileName;
+        String mediaUrl = "/upload/diary/" + fileName;
         return Result.success((Object)mediaUrl);
     }
 }
