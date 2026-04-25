@@ -31,24 +31,25 @@
             width: 100%;
             height: 100%;
             display: flex;
-            animation: slideAuto linear infinite;
+            /* animation: slideAuto linear infinite; */
+            /* transition: transform 0.8s ease; */
         }
 
         .banner-slide img {
-            width: 100vw;
+            width: 100%;
             height: 400px;
             object-fit: cover;
             flex-shrink: 0;
         }
 
-        @keyframes slideAuto {
+       /* @keyframes slideAuto {
             0% {
                 transform: translateX(0);
             }
             100% {
                 transform: translateX(-100%);
             }
-        }
+        } */
 
         .banner-contact {
             width: 25%;
@@ -669,73 +670,34 @@
     }
 </script>
 <script>
-    // 页面加载就请求后台
     $(function () {
-        //1. 请求轮播图接口
-        $.get("/api/banner/list",{status:1}, function (res) {
-            if (res.code !== 200) {
-                console.error("轮播图接口请求失败");
-                return;
-            }
-            // 过滤启用的轮播图
-            const bannerList = res.data.records.filter(item => item.status === 1);
-            const len = bannerList.length;
+        $.get("/api/banner/list?status=1", function (res) {
+            if (res.code !== 200) return;
+
+            let list = res.data.records;
+            let len = list.length;
             if (len === 0) return;
 
-            // 2. 渲染轮播图（最后多拼接一张第一张，实现无缝衔接）
+            // 渲染图片
             let html = "";
-            bannerList.forEach(item => {
-                html += `<img src="${item.imgUrl}" alt="轮播图">`;
+            list.forEach(item => {
+                html += `<img src="${item.imgUrl}">`;
             });
-            // 无缝衔接：最后加第一张图
-            html += `<img src="${bannerList[0].imgUrl}" alt="轮播图">`;
             $("#slideContainer").html(html);
 
-            // 3. 动态生成@keyframes，适配当前张数
-            createSlideAnimation(len);
-        }).fail(function () {
-            console.error("轮播图接口请求异常");
+            // JS 自动轮播（根据真实数量播放）
+            let index = 0;
+            setInterval(() => {
+                index++;
+                if (index >= len) {
+                    index = 0;
+                }
+                $("#slideContainer").css("transform", "translateX(-" + index * 100 + "%)");
+            }, 3000); //3秒一张
         });
-    })
-
-    // 动态生成轮播动画关键帧
-    function createSlideAnimation(imgCount) {
-        // 每张图停留时间占比（可调整，比如20%表示每张停20%的总时长）
-        const stayPercent = 20;
-        // 切换动画时间占比（5%表示切换用5%的总时长）
-        const switchPercent = 5;
-
-        let keyframes = "@keyframes slideAuto { 0% { transform: translateX(0); }";
-        let currentPercent = 0;
-
-        for (let i = 0; i < imgCount; i++) {
-            // 停留阶段：当前位置停留stayPercent%时长
-            currentPercent += stayPercent;
-            keyframes += `
-      ${currentPercent}% { transform: translateX(-${i * 100}%); }
-    `;
-            // 切换阶段：用switchPercent%时长滑到下一张
-            currentPercent += switchPercent;
-            keyframes += `
-      ${currentPercent}% { transform: translateX(-${(i + 1) * 100}%); }
-    `;
-        }
-
-        // 最后回到0（因为最后多了一张第一张，实现无缝）
-        keyframes += `100% { transform: translateX(-${imgCount * 100}%); } }`;
-
-        // 把动态生成的@keyframes插入到页面
-        const style = document.createElement("style");
-        style.innerHTML = keyframes;
-        // 设置动画时长：每张图1秒（可调整，比如3*imgCount秒）
-        style.innerHTML += `
-    #slideContainer {
-      animation-duration: ${imgCount * 1.5}s !important;
-    }
-  `;
-        document.head.appendChild(style);
-    }
+    });
 </script>
+
 </body>
 
 </html>

@@ -39,11 +39,42 @@
         /* 四列布局 */
         
         .diary-list {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto 40px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
+        }
+        /* 分页样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 40px 0;
+        }
+        .pagination button {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .pagination button:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+            color: #999;
+        }
+        .pagination .page-num {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .pagination .page-num.active {
+            background: #EF89A0;
+            color: #fff;
+            border-color: #EF89A0;
         }
         /* 手机端自动变1列 */
         
@@ -107,6 +138,9 @@
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .diary-time {
@@ -139,14 +173,6 @@
 
         <div class="diary-list" id="diaryBox">
 
-            <!-- 项目1 -->
-            <div class="diary-item" onclick="goDetail(1)">
-                <img src="pic/video1.jpg" alt="视频封面">
-                <div class="diary-info">
-                    <div class="diary-title">寿司会</div>
-                    <div class="diary-time">2026-03-17</div>
-                </div>
-            </div>
         </div>
     </div>
     <!-- 引用底部 -->
@@ -165,9 +191,20 @@
             });
     </script>
     <script>
+        let currentPage = 1; // 当前页
+        let size = 10;      // 每页条数
+        let totalPage = 1;  // 总页数
         // 页面加载就请求后台
         $(function(){
-            $.get("/api/diary/list", function(res){
+            // 初始加载第1页
+            loadList(1);
+        })
+        // 加载列表数据 + 分页
+        function loadList(page) {
+            currentPage = page;
+            $.get("/api/diary/list",{page: currentPage, size: size}, function(res){
+                let data = res.data;
+                totalPage = data.pages; // 总页数
                 let html = "";
                 res.data.records.forEach(item=>{
                     if(item.mediaType === "video"){
@@ -186,8 +223,37 @@
 
                 })
                 $("#diaryBox").html(html);
+                // 渲染分页按钮
+                renderPagination();
             })
-        })
+        }
+        // 渲染分页
+        function renderPagination() {
+            // 1. 先删除所有已存在的分页，避免重复
+            $(".pagination").remove();
+            // 2. 构建新分页HTML
+            let pageHtml = `<div class="pagination">`;
+
+            // 上一页
+            pageHtml += `<button onclick="loadList(${currentPage-1})" ${currentPage<=1 ? 'disabled' : ''}>上一页</button>`;
+
+            // 页码
+            let start = Math.max(1, currentPage - 2);
+            let end = Math.min(totalPage, currentPage + 2);
+
+            if (start > 1) pageHtml += `<span class="page-num">...</span>`;
+            for(let i = start; i <= end; i++){
+                pageHtml += `<span class="page-num ${currentPage === i ? 'active' : ''}" onclick="loadList(${i})">${i}</span>`;
+            }
+            if (end < totalPage) pageHtml += `<span class="page-num">...</span>`;
+
+            // 下一页
+            pageHtml += `<button onclick="loadList(${currentPage+1})" ${currentPage>=totalPage ? 'disabled' : ''}>下一页</button>`;
+            pageHtml += `</div>`;
+
+            // 插入到页面
+            $("#diaryBox").after(pageHtml);
+        }
         // 跳转到详情页，传id
         function goDetail(id) {
             location.href = `videoDetail.html?id=${id}`;
