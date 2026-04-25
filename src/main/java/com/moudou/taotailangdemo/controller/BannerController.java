@@ -71,8 +71,8 @@ public class BannerController {
     // 图片上传【核心修复：返回完整可访问路径+文件校验】
     @PostMapping("/upload")
     public Result upload(@RequestParam("file") MultipartFile file) throws IOException {
-        // 1. 文件大小校验：限制6MB（可根据需求调整）
-        if (file.getSize() > 6 * 1024 * 1024) {
+        // 1. 文件大小校验：限制5MB（可根据需求调整）
+        if (file.getSize() > 5 * 1024 * 1024) {
             return Result.fail("图片大小不能超过5MB");
         }
         // 2. 文件名非空校验
@@ -97,7 +97,7 @@ public class BannerController {
         File destFile = new File(dirFile, newFileName);
         file.transferTo(destFile);
         // 7. 拼接前端可访问的完整网络路径并返回
-        String imgAccessUrl = BASE_URL + "/upload/" + newFileName;
+        String imgAccessUrl = "/upload/" + newFileName;
         return Result.success((Object) imgAccessUrl);
     }
 
@@ -128,11 +128,16 @@ public class BannerController {
         }
         // 可选优化：删除轮播图时，同时删除本地上传的图片文件
 
-        String imgPath = banner.getImgUrl().replace(BASE_URL + "/upload/", "");
-        File imgFile = new File(System.getProperty("user.home") + "/upload/" + imgPath);
-        if (imgFile.exists()) {
-            imgFile.delete();
+        // 只取 /upload/ 后面的文件名，不要带任何域名
+        String imgUrl = banner.getImgUrl();
+        if (imgUrl != null && imgUrl.startsWith("/upload/")) {
+            String imgName = imgUrl.replace("/upload/", "");
+            File imgFile = new File(System.getProperty("user.home") + "/upload/" + imgName);
+            if (imgFile.exists()) {
+                imgFile.delete();
+            }
         }
+
 
         bannerService.removeById(id);
         return Result.success("删除成功"); // 返回提示信息，前端可解析
